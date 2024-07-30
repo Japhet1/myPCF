@@ -5,6 +5,7 @@ import { SummaryProp } from './DummyData/summaryData'
 import { Text } from '@fluentui/react/lib/Text'
 import { ColumnView } from "./columnView"
 import { Separator } from "@fluentui/react"
+import { mergeStyleSets } from "@fluentui/react"
 
 
 
@@ -13,9 +14,17 @@ export interface ContactViewProp {
 }
 
 
-// const classNames = mergeStyleSets({
-
-// })
+const classNames = mergeStyleSets({
+    container: {
+        marginTop: '15px', // Adjust padding as needed
+        // marginBottom: '15px',
+    },
+    span: {
+        marginRight: '8px', // Space between spans
+        backgroundColor: '#f4f4f4', // Gray background color
+        padding: '4px',
+    },
+  });
 
 
 
@@ -38,8 +47,8 @@ export const ContactView: React.FC<ContactViewProp> = (props) => {
                     <StackItem>
                         <Text variant="xLarge">{contact.name}</Text>
                         <div>
-                            <Text variant="xSmall">{contact.type}</Text>
-                            <Text variant="xSmall">{contact.category}</Text>
+                            <Text variant="xSmall" className={classNames.span}>{contact.type}</Text>
+                            <Text variant="xSmall" className={classNames.span}>{contact.category}</Text>
                         </div>
                         <div>ID: <strong>{contact.id}</strong></div>
                     </StackItem>

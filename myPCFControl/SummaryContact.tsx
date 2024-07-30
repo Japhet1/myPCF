@@ -7,12 +7,14 @@ import { SummaryProp, SummaryData, getSummaryData } from './DummyData/summaryDat
 
 type HandleDataFromChild = (data: SummaryProp) => void;
 
+
+
 export const SummaryContact: React.FC = () => {
 
-  const [contact, setContact] = React.useState<SummaryProp>()
+  const [contact, setContact] = React.useState<SummaryProp>(SummaryData[0])
 
 
-  setContact(SummaryData[0])
+  // setContact(summaryData)
   console.log(contact)
 
 
@@ -28,7 +30,7 @@ export const SummaryContact: React.FC = () => {
     <Grid>
       <GridRow rowGap colGap>
         <GridCell md={3}>
-          {/* <ContactView contact={contact} /> */}
+          <ContactView contact={contact} />
         </GridCell>
       </GridRow>
       <GridRow>
