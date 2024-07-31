@@ -6,19 +6,20 @@ export interface SummaryProp {
     phone: string,
     email: string,
     branch: string,
-    gendercode: string,
-    dateofbirth: string,
+    gendercode?: string,
+    dateofbirth?: string,
     address: string,
     preferredcontactmethod: string,
-    occupation: string,
-    employername: string,
-    annualincome: string,
+    occupation?: string,
+    employername?: string,
+    annualincome?: string,
     companyregistrationnumber: string,
     companyplaceofincorporation: string,
     companyoperation: string,
     yearofoperation: string,
     bank: string,
-    bankbranch: string
+    bankbranch: string,
+    event?: {}
 }
 
 export const SummaryData: SummaryProp[] = [
@@ -42,7 +43,17 @@ export const SummaryData: SummaryProp[] = [
         companyoperation: "",
         yearofoperation: "",
         bank: "UBA",
-        bankbranch: "Madina"
+        bankbranch: "Madina",
+        event: {
+            // { key: "Education", value: ["Testing 1", "Testing 2", "Testing 3"]},
+            // { key: "Employment", value: ["Testing 1", "Testing 2", "Testing 3"]},
+            // { key: "Health", value: ["Testing 1", "Testing 2"]},
+            // { key: "Other", value: []}
+            Education: ["Testing 1", "Testing 2", "Testing 3"],
+            Employment: ["Testing 1", "Testing 2", "Testing 3"],
+            Health: ["Testing 1", "Testing 2"],
+            Other: []
+        }
     },
     {
         id: 2,
@@ -52,19 +63,14 @@ export const SummaryData: SummaryProp[] = [
         phone: "022789012",
         email: "japh@gmail.com",
         branch: "madina",
-        gendercode: "",
-        dateofbirth: "",
         address: "Botwe",
         preferredcontactmethod: "any",
-        occupation: "",
-        employername: "",
-        annualincome: "",
         companyregistrationnumber: "ABN-566",
         companyplaceofincorporation: "Ghana",
         companyoperation: "Transport",
         yearofoperation: "5 years",
         bank: "Ecobank",
-        bankbranch: "Tesano"
+        bankbranch: "Tesano",
     }
 ]
 

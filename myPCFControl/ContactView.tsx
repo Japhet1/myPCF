@@ -81,7 +81,6 @@ export const ContactView: React.FC<ContactViewProp> = (props) => {
                         <ColumnView label="Bank" iconName="" value={contact.bank} />
                         <ColumnView label="Bank branch" iconName="" value={contact.bankbranch} />
                     </StackItem>
-                    
                 </Stack>
             </PanelContent>
         </Panel>

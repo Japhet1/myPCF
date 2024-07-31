@@ -6,7 +6,7 @@ import { FontIcon, Icon, mergeStyleSets } from "@fluentui/react"
 export interface ColumnViewProp {
     label: string,
     iconName?: string,
-    value: string,
+    value?: string,
 }
 
 export const ColumnView: React.FC<ColumnViewProp> = (props) => {

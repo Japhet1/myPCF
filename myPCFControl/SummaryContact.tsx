@@ -4,6 +4,7 @@ import { Table } from './Table';
 import { Grid, GridCell, GridRow } from 'pcf-components/lib/grid';
 import { ContactView } from './ContactView';
 import { SummaryProp, SummaryData, getSummaryData } from './DummyData/summaryData'
+import { LifeEvent } from './lifeEvent';
 
 type HandleDataFromChild = (data: SummaryProp) => void;
 
@@ -15,29 +16,32 @@ export const SummaryContact: React.FC = () => {
 
 
   // setContact(summaryData)
-  console.log(contact)
+  // console.log(contact)
 
 
-  const handleDataFromChild: HandleDataFromChild = (data) => {
-    setContact(data);
-  };
+  // const handleDataFromChild: HandleDataFromChild = (data) => {
+  //   setContact(data);
+  // };
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
 
-  })
+  // })
 
   return(
     <Grid>
       <GridRow rowGap colGap>
-        <GridCell md={3}>
+        {/* <GridCell md={3}>
           <ContactView contact={contact} />
-        </GridCell>
+        </GridCell> */}
+          <GridCell md={9}>
+            <LifeEvent />
+          </GridCell>
       </GridRow>
-      <GridRow>
+      {/* <GridRow>
         <GridCell md={12}>
           <Table sendDataToParent={handleDataFromChild} />
         </GridCell>
-      </GridRow>
+      </GridRow> */}
     </Grid>
 
     
