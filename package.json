@@ -18,7 +18,8 @@
     "pcf-components": "^1.0.16",
     "pcf-core": "^1.0.19",
     "react": "16.8.6",
-    "react-dom": "16.8.6"
+    "react-dom": "16.8.6",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@microsoft/eslint-plugin-power-apps": "^0.2.33",

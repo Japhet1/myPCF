@@ -47,7 +47,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
     //     key,
     //     value
     // })).filter(evt => evt.key == "event")
-    // // console.log(lifeEventCategory)
+    console.log(lifeEventCategory)
     // console.log(data)
     
 
@@ -70,7 +70,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
                     </StackItem>
                     <StackItem>
                         {/* <CommandBarButton iconProps={addIcon} text="Add event"  className={classNames.cmdButton} /> */}
-                        <AddLifeEvent />
+                        <AddLifeEvent lifeEventCategory={lifeEventCategory}  />
                     </StackItem>
                 </Stack>
             </PanelHeader>

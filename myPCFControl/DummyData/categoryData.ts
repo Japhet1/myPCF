@@ -1,28 +1,47 @@
 export interface LifeEventCategoryProp {
-    key: number,
+    key: string,
     text: string,
-    // events: string[]
+    type: any[]
 }
 
 export const LifeEventCategoryData: LifeEventCategoryProp[] = [
     {
-        key: 1,
+        key: "1",
         text: "Education",
-        // events: ["Testing 1", "Testing 2", "Testing 3"]
+        type: [
+            { key: "1", text: "Associate degree" },
+            { key: "2", text: "Bachelor degree"}, 
+            { key: "3", text: "Doctorate degree" },
+            { key: "4", text: "High school" },
+            { key: "5", text: "Master degree" }, 
+            { key: "6", text: "Other" } , 
+        ]
     },
     {
-        key: 2,
+        key: "2",
         text: "Employment",
-        // events: ["Testing 1", "Testing 2", "Testing 3"]
+        type: [
+            { key: "1", text: "Business closed" },
+            { key: "2", text: "Business started"}, 
+            { key: "3", text: "Job started" },
+            { key: "4", text: "Job ended" },
+            { key: "5", text: "Retirement" }, 
+            { key: "6", text: "Other" } ,
+        ]
     },
     {
-        key: 3,
+        key: "3",
         text: "Health",
-        // events: ["Testing 1", "Testing 2", "Testing 3"]
+        type: [
+            { key: "1", text: "Hospital/Facility stay" },
+            { key: "2", text: "Procedure"}, 
+            { key: "3", text: "Serious illness" },
+            { key: "4", text: "Other" } , 
+        ]
     },
     {
-        key: 4,
+        key: "4",
         text: "Other",
-        // events: ["Testing 1", "Testing 2", "Testing 3"]
+        type: [{ key: "1", text: "Other" } ,]
     }
 ]

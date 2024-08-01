@@ -23,11 +23,11 @@ export interface LifeEventTileProp {
 
 const categoryiconname = (category: LifeEventCategoryProp) => {
     switch (category.key) {
-        case 1:
+        case "1":
             return "Education"
-        case 2: 
+        case "2": 
             return "Work"
-        case 3:
+        case "3":
             return "Hospital"
         default: 
             return "CubeShape"

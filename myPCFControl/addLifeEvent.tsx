@@ -7,11 +7,12 @@ import { ContextualMenu } from '@fluentui/react/lib/ContextualMenu';
 import { useId, useBoolean } from '@fluentui/react-hooks';
 import { IIconProps, mergeStyleSets } from '@fluentui/react';
 import { CreateForm } from './createForm';
+import { LifeEventCategoryProp } from './DummyData/categoryData';
+import { log } from 'console';
 
 
 
 const addIcon: IIconProps = { iconName: 'Add'}
-
 const classNames = mergeStyleSets({
     cmdButton: {
         height: '100%',
@@ -24,15 +25,6 @@ const classNames = mergeStyleSets({
 
 })
 
-
-const dialogStyles = { main: { maxWidth: 700 } };
-const dragOptions = {
-  moveMenuItemText: 'Move',
-  closeMenuItemText: 'Close',
-  menu: ContextualMenu,
-  keepInBounds: true,
-};
-const screenReaderOnly = mergeStyles(hiddenContentStyle);
 const dialogContentProps = {
   type: DialogType.normal,
   title: 'Create event',
@@ -40,7 +32,11 @@ const dialogContentProps = {
   // subText: 'Do you want to send this message without a subject?',
 };
 
-export const AddLifeEvent: React.FC = () => {
+export interface AddLifeEventProp {
+  lifeEventCategory: LifeEventCategoryProp[]
+}
+
+export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   const [hideDialog, { toggle: toggleHideDialog }] = useBoolean(true);
   const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
   const labelId: string = useId('dialogLabel');
@@ -57,6 +53,11 @@ export const AddLifeEvent: React.FC = () => {
     [isDraggable, labelId, subTextId],
   );
 
+  // console.log(props.lifeEventCategory);
+
+  // const optionType = React.useRef<[]>()
+  
+
   return (
     <>
       <CommandBarButton iconProps={addIcon} text='Add event' onClick={toggleHideDialog} className={classNames.cmdButton} />
@@ -68,7 +69,7 @@ export const AddLifeEvent: React.FC = () => {
         maxWidth={493}
         minWidth={288}
       >
-        <CreateForm />
+        <CreateForm categoryOption={props.lifeEventCategory} />
         <DialogFooter>
           <PrimaryButton onClick={toggleHideDialog} text="Save" />
           <DefaultButton onClick={toggleHideDialog} text="Cancel" />
