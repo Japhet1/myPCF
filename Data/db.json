@@ -1,0 +1,47 @@
+{
+  "category": [],
+  "events": [
+    {
+      "id": "11f4",
+      "category": "Health",
+      "date": "2024-08-19T00:00:00.000Z",
+      "detail": "TESTING1",
+      "type": "Hospital/Facility stay"
+    },
+    {
+      "id": "9ded",
+      "category": "Health",
+      "date": "2024-08-13T00:00:00.000Z",
+      "detail": "TESTING2",
+      "type": "Serious illness"
+    },
+    {
+      "id": "b55f",
+      "category": "Education",
+      "date": "2024-08-26T00:00:00.000Z",
+      "detail": "TESTING3",
+      "type": "Master degree"
+    },
+    {
+      "id": "768f",
+      "category": "Education",
+      "date": "2024-08-26T00:00:00.000Z",
+      "detail": "",
+      "type": "Master degree"
+    },
+    {
+      "id": "0e23",
+      "category": "Employment",
+      "date": "2024-08-15T00:00:00.000Z",
+      "detail": "TESTING4",
+      "type": "Job ended"
+    },
+    {
+      "id": "980b",
+      "category": "Employment",
+      "date": "2024-08-15T00:00:00.000Z",
+      "detail": "",
+      "type": "Job ended"
+    }
+  ]
+}

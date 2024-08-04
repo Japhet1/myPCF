@@ -7,7 +7,6 @@ import { TextField, ITextFieldStyles } from "@fluentui/react/lib/TextField";
 import { DatePicker, DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
 import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData";
 import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
-// import { EventCategory } from "./addLifeEvent";
 import * as Yup from "yup"
 import { postData } from "./Api/api";
   
@@ -34,133 +33,51 @@ const days: IDropdownOption[] = [
 ]
 
 interface MyFormValues {
-    category: {key: string, text: string, type: {key: string, text: string}[]},
+    category: {key: string, text: string, type: {}[]},
     type: {key: string, text: string},
     detail: string,
     date: string
 }
-
 interface CreateFormProp {
     categoryOption: LifeEventCategoryProp[]
     setValid: (valid: boolean) => void
     showCategory: boolean
-    // event: EventCategory
-    
 }
-// const newLead: Lead = new Lead
-
 const setForm = {
-    category: {key: '', text: '', type:[ {key: '', text: ''}]},
+    category: {key: '', text: '', type: [{}]},
     type: {key: '', text: ''},
     detail: "",
     date: ""
 }
-
-// const valid = newLead.validate(setForm)
-
-// newLead.getIdColumnName(setForm)
-
 export const CreateForm: React.FC<CreateFormProp> = (props) => {
     const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
     const [firstTextFieldValue, setFirstTextFieldValue] = React.useState('');
     const [secondTextFieldValue, setSecondTextFieldValue] = React.useState('');
-    // const [categoryOption, setCategoryOption] = React.useState<LifeEventCategoryProp[]>(props.categoryOption)
-
     const optionCategory = React.useRef<LifeEventCategoryProp[]>(props.categoryOption)
-    // const { event } = props
-
-    const [selectedItem, setSelectedItem] = React.useState<MyFormValues>();
-
-    // const selectedItem = React.useRef<MyFormValues>()
-
-    // const d: {} | undefined = selectedItem?.type
-
-    
-
-    // const transformData = (data?: MyFormValues) => {
-
-    //     const newData = {
-    //         category: data?.category.text,
-    //         date: new Date(`${data?.date}`).toLocaleString(),
-    //         detail: data?.detail,
-    //         type: data?.type.text
-    //     };
-        
-    //     return postData(newData)
-    // };
-      
-      // Get the transformed data
-    //   const transformedData = transformData(selectedItem);
-      
-    // console.log(transformData);
-    
-
-    // const dataFormat = {
-    //     category: d.text
-    // }
-
-    // const onChange = (event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void => {
-    //     setSelectedItem(item);
-    // };    
-    
-
-
-    // console.log(categoryOption)
-  
-    // const onChangeFirstTextFieldValue = React.useCallback(
-    //     (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-    //     setFirstTextFieldValue(newValue || '');
-    //     },
-    //     [],
-    // );
-    // const onChangeSecondTextFieldValue = React.useCallback(
-    //     (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-    //     if (!newValue || newValue.length <= 5) {
-    //         setSecondTextFieldValue(newValue || '');
-    //     }
-    //     },
-    //     [],
-    // )
-
-    const getOptions = React.useCallback((values: any): IDropdownOption<any>[] => {
-        
-        // if (values.category) {
-        //     const v = values.category.key;
-        //     const selectedCategory = optionCategory.current.find((e) => e.key.toString().startsWith(v));
-        //     if (selectedCategory && selectedCategory.type) {
-        //         // console.log(selectedCategory.type);
-        //         return selectedCategory.type;
-        //     }
-        // }
-        const selectedCategory = optionCategory.current.find(e => e.key.toString().startsWith(values.category.key));
-        return selectedCategory && selectedCategory.type ? selectedCategory.type : [];
-        // let d: any[] = []
-        // e.forEach(e => d.push(e.text))
-        // return [];
-        
-    }, [])
-
+    const [selectedItem, setSelectedItem] = React.useState<MyFormValues>(setForm);
     React.useEffect(() => {
-        const transformData = async (data?: MyFormValues) => {
-
+        const transformData = (data: MyFormValues) => {
             const newData = {
-                category: data?.category.text,
-                date: data?.date,
-                detail: data?.detail,
+                category: data.category.text,
+                date: new Date(`${data.date}`).toLocaleString(),
+                detail: data.detail,
                 type: data?.type.text
             };
-
-            if(newData.category) {
-                return await postData(newData)
-            }
-            
-            
+            return postData(newData)
         };
-        
 
         transformData(selectedItem)
-    }, [selectedItem])
-
+    }, [selectedItem])   
+    const getOptions = (values: any): IDropdownOption<any>[] => {    
+        if (values.category) {
+            const v = values.category.key;
+            const selectedCategory = optionCategory.current.find((e) => e.key.toString().startsWith(v));
+            if (selectedCategory && selectedCategory.type) {
+                return selectedCategory.type;
+            }
+        }
+        return [];
+    }
     return (
         <div>
             <Formik
@@ -176,21 +93,9 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                     date: Yup.string().required('Required'),
                 })} //event.validate
                 enableReinitialize={true}
-                onSubmit={async(values, actions) => {
-                    // console.log( values );
-                    // selectedItem.current = values
-                    // const newData = {
-                    //     category: values.category.text,
-                    //     date: values.date,
-                    //     detail: values.detail,
-                    //     type: values.type.text
-                    // };
-                    // await postData(newData)
-                    actions.resetForm()
-                    // console.log(transformData(values))
+                onSubmit={(values, actions) => {
                     setSelectedItem(values)
-                    // console.log(JSON.stringify(values, null, 2));
-                    actions.setSubmitting(true);
+                    actions.setSubmitting(false);
                 }}
             
                 component={({values, touched, errors, ...formprops}) => (
@@ -214,7 +119,6 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                                         options={getOptions(values)}
                                         disabled={!(values as any).category}
                                         styles={dropdownStyles}
-
                                     />
                                 </StackItem>
                             </Stack>
@@ -224,16 +128,6 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                                     label="Details"
                                     styles={textFieldStyles}
                                 />
-                                 {/* <div>
-                                    <label htmlFor="selectedOption">Choose an option:</label>
-                                    <Field as="select" name="selectedOption">
-                                        {optionCategory.current.map(option => (
-                                            <option key={option.key} value={option.text}>
-                                            {option.text}
-                                            </option>
-                                        ))}
-                                    </Field>
-                                </div> */}
                             </StackItem>
                             <StackItem>
                                 <FieldDatePicker

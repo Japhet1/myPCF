@@ -8,22 +8,42 @@ import { useId, useBoolean } from '@fluentui/react-hooks';
 import { IIconProps, mergeStyleSets } from '@fluentui/react';
 import { CreateForm } from './createForm';
 import { LifeEventCategoryProp } from './DummyData/categoryData';
-import { log } from 'console';
+import { EntityRecord, Property, IChoice } from "pcf-core";
+import * as Yup from "yup"
 
 
 
 const addIcon: IIconProps = { iconName: 'Add'}
-const classNames = mergeStyleSets({
-    cmdButton: {
-        height: '100%',
-        marginRight: 10,
-        // backgroundColor: '#f4f4f4',
-    },
-    container: {
-      width: '80%'
-    }
+const classNames = mergeStyleSets({cmdButton: {height: '100%',marginRight: 10}, container: {width: '80%'}})
 
-})
+
+// export class EventCategory extends EntityRecord {
+  
+//   @Property()
+//   public category: IChoice = undefined;
+//   @Property()
+//   public type: IChoice = undefined;
+//   @Property()
+//   public detail: string = undefined;
+//   @Property()
+//   public date: string = undefined;
+
+//   getIdColumnName(): string {
+//       return "id" 
+//   }
+
+//   validate(data?: any) {
+//      return  Yup.object().shape({
+//           category: Yup.object().required('Required').nullable(),
+//           type: Yup.object()
+//             .required('Required'),
+//           detail: Yup.string(),
+//           //   .required('Required'),
+//           date: Yup.string().required('Required'),
+//           // email: Yup.string().email('Invalid email').required('Required'),
+//       })
+//   }
+// }
 
 const dialogContentProps = {
   type: DialogType.normal,
@@ -41,6 +61,11 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
   const labelId: string = useId('dialogLabel');
   const subTextId: string = useId('subTextLabel');
+  const [isValid, setIsValid] = React.useState(true)
+
+  const showCategory = React.useRef(!props.lifeEventCategory)
+
+  const lifeEvent = React.useRef<LifeEventCategoryProp[]>(props.lifeEventCategory)
 
   const modalProps = React.useMemo(
     () => ({
@@ -52,6 +77,10 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
     }),
     [isDraggable, labelId, subTextId],
   );
+
+  const callbackOnSave = React.useCallback((valid: boolean) => {
+    setIsValid(valid)
+  }, [])
 
   // console.log(props.lifeEventCategory);
 
@@ -69,9 +98,10 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
         maxWidth={493}
         minWidth={288}
       >
-        <CreateForm categoryOption={props.lifeEventCategory} />
+        <CreateForm categoryOption={lifeEvent.current} setValid={callbackOnSave} showCategory={showCategory.current} />
+        {/* <CreateForm event={lifeEvent.current} setValid={callbackOnSave} categoryOption={props.lifeEventCategory} /> */}
         <DialogFooter>
-          <PrimaryButton onClick={toggleHideDialog} text="Save" />
+          <PrimaryButton onClick={toggleHideDialog} text="Save" disabled={!isValid} />
           <DefaultButton onClick={toggleHideDialog} text="Cancel" />
         </DialogFooter>
       </Dialog>

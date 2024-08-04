@@ -36,8 +36,8 @@ export interface LifeEventProp {
 
 export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
-    const [lifeEventCategory, setLifeEventCategory] = React.useState<LifeEventCategoryProp[]>(LifeEventCategoryData)
-
+    // const [lifeEventCategory, setLifeEventCategory] = React.useState<LifeEventCategoryProp[]>(LifeEventCategoryData)
+    const lifeEventCategory = React.useRef<LifeEventCategoryProp[]>(LifeEventCategoryData)
     // console.log(Object.entries(props.contactEvent).map(([key, value]) => ({
     //     key,
     //     value
@@ -47,7 +47,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
     //     key,
     //     value
     // })).filter(evt => evt.key == "event")
-    console.log(lifeEventCategory)
+    // console.log(lifeEventCategory)
     // console.log(data)
     
 
@@ -70,13 +70,13 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
                     </StackItem>
                     <StackItem>
                         {/* <CommandBarButton iconProps={addIcon} text="Add event"  className={classNames.cmdButton} /> */}
-                        <AddLifeEvent lifeEventCategory={lifeEventCategory}  />
+                        <AddLifeEvent lifeEventCategory={lifeEventCategory.current}  />
                     </StackItem>
                 </Stack>
             </PanelHeader>
             <PanelContent>
                 <div className={classNames.tiles}>
-                    {lifeEventCategory && lifeEventCategory.map((category) => (
+                    {lifeEventCategory && lifeEventCategory.current.map((category) => (
                         <LifeEventTile category={category} />
                     ))}   
                 </div>
