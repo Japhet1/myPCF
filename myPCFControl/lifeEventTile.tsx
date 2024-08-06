@@ -2,7 +2,7 @@ import * as React from "react"
 import { LifeEventCategoryProp } from "./DummyData/categoryData"
 import { Panel, PanelContent, PanelHeader, PanelHeaderFlexible } from "pcf-components/lib/panel"
 import { StackItem, Stack } from "@fluentui/react/lib/Stack"
-import { IconButton } from "@fluentui/react/lib/Button"
+import { ActionButton, IconButton } from "@fluentui/react/lib/Button"
 import { mergeStyleSets, Text } from "@fluentui/react"
 import { fetchData, EventProp } from "./Api/api"
 import { formatDistance, subDays } from "date-fns";
@@ -58,8 +58,8 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
 
     const detail = props.item.filter(e => e.category === props.category.text).map(e => ({type: e.type, date: e.date}))
     
-    // console.log(count)
-    console.log(detail)
+    console.log(count)
+    // console.log(detail)
     // console.log(props.item)
 
     return (
@@ -75,14 +75,14 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     </Stack>
                     <Stack>
                         <StackItem>
-                            <Text variant="smallPlus">{`${count.length} ${props.item.length > 1 ? "events" : "event"}`}</Text>
+                            <Text variant="smallPlus">{count.length} {count.length > 0 ? "events" : "event"}</Text>
                         </StackItem>
                     </Stack>
                 </StackItem>
             </Stack>
             </PanelHeaderFlexible>
             <PanelContent>
-            {count.length && detail.length > 0 ? 
+            {count.length && detail.length > 0 ? (
                 <Stack tokens={{childrenGap: 5}}>
                     <StackItem>
                         <Text variant="smallPlus">{detail[detail.length -1].type}</Text>
@@ -90,8 +90,10 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     <StackItem>
                         <Text variant="smallPlus">{formatDistance(subDays(new Date(detail[detail.length -1].date), 3), new Date(), { addSuffix: true })}</Text>
                     </StackItem>
-                </Stack>
-            : ""    
+                </Stack> )
+            :   (
+                <ActionButton iconProps={{iconName: 'Add'}}>Add event</ActionButton>
+            )  
             }
                 
             </PanelContent>
