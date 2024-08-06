@@ -8,8 +8,11 @@ import { useId, useBoolean } from '@fluentui/react-hooks';
 import { IIconProps, mergeStyleSets } from '@fluentui/react';
 import { CreateForm } from './createForm';
 import { LifeEventCategoryProp } from './DummyData/categoryData';
-import { EntityRecord, Property, IChoice } from "pcf-core";
-import * as Yup from "yup"
+import { EventCategory } from './model';
+import { FormikHelpers, FormikProps } from 'formik';
+import { IObjectHash } from 'pcf-core';
+import { useAsync } from 'pcf-components/lib/hooks';
+import { postData } from './Api/api';
 
 
 
@@ -17,33 +20,14 @@ const addIcon: IIconProps = { iconName: 'Add'}
 const classNames = mergeStyleSets({cmdButton: {height: '100%',marginRight: 10}, container: {width: '80%'}})
 
 
-// export class EventCategory extends EntityRecord {
-  
-//   @Property()
-//   public category: IChoice = undefined;
-//   @Property()
-//   public type: IChoice = undefined;
-//   @Property()
-//   public detail: string = undefined;
-//   @Property()
-//   public date: string = undefined;
 
-//   getIdColumnName(): string {
-//       return "id" 
-//   }
 
-//   validate(data?: any) {
-//      return  Yup.object().shape({
-//           category: Yup.object().required('Required').nullable(),
-//           type: Yup.object()
-//             .required('Required'),
-//           detail: Yup.string(),
-//           //   .required('Required'),
-//           date: Yup.string().required('Required'),
-//           // email: Yup.string().email('Invalid email').required('Required'),
-//       })
-//   }
-// }
+// const d = EventCategory.bind({
+//   category: {key: 0, text: ""},
+//   type: {key: 0, text: ""},
+//   detail: "",
+//   date: ""
+// })
 
 const dialogContentProps = {
   type: DialogType.normal,
@@ -66,6 +50,21 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   const showCategory = React.useRef(!props.lifeEventCategory)
 
   const lifeEvent = React.useRef<LifeEventCategoryProp[]>(props.lifeEventCategory)
+  const initialEventValues = React.useRef<EventCategory>()
+
+  const formRef = React.useRef<FormikProps<IObjectHash>>()
+  const actionRef = React.useRef<FormikHelpers<{}>>()
+
+  // const [execute, pending, value, error] = useAsync(async () => {
+  //   const isNew = initialEventValues.current.isNew();
+  //   initialEventValues.current.setValues(formRef.current.values);
+  //   initialEventValues.current.mictslos_name = event.mictslos_category.text + ' (' + props.contactFullname + ')';
+  //   await table.saveRecord(event, { silent: false });
+  //   props.onAfterSave(event, !isNew);
+  // });
+
+
+
 
   const modalProps = React.useMemo(
     () => ({
@@ -85,6 +84,25 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   // console.log(props.lifeEventCategory);
 
   // const optionType = React.useRef<[]>()
+
+  const onsave = async() => {
+        if (formRef.current) {
+          const newData = {
+                category: formRef.current.values.category.text,
+                date: formRef.current.values.date,
+                detail: formRef.current.values.detail,
+                type: formRef.current.values.type.text
+            };
+            await postData(newData)
+            
+          console.log(newData)
+        }
+  }
+
+
+  React.useEffect(() => {
+    
+  })
   
 
   return (
@@ -98,10 +116,10 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
         maxWidth={493}
         minWidth={288}
       >
-        <CreateForm categoryOption={lifeEvent.current} setValid={callbackOnSave} showCategory={showCategory.current} />
+        <CreateForm formRef={formRef} event={initialEventValues.current} typeOption={lifeEvent.current} setValid={callbackOnSave} showCategory={showCategory.current} />
         {/* <CreateForm event={lifeEvent.current} setValid={callbackOnSave} categoryOption={props.lifeEventCategory} /> */}
         <DialogFooter>
-          <PrimaryButton onClick={toggleHideDialog} text="Save" disabled={!isValid} />
+          <PrimaryButton onClick={onsave} text="Save" disabled={!isValid} />
           <DefaultButton onClick={toggleHideDialog} text="Cancel" />
         </DialogFooter>
       </Dialog>

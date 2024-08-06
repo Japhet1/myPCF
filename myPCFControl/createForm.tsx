@@ -7,9 +7,10 @@ import { TextField, ITextFieldStyles } from "@fluentui/react/lib/TextField";
 import { DatePicker, DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
 import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData";
 import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
-// import { EventCategory } from "./addLifeEvent";
+import { EventCategory } from "./model";
 import * as Yup from "yup"
 import { postData } from "./Api/api";
+import { IObjectHash } from "pcf-core";
   
 const stackgap = { childrenGap: 20 }
 const stackGap: IStackTokens = { childrenGap: 20 }
@@ -41,10 +42,11 @@ interface MyFormValues {
 }
 
 interface CreateFormProp {
-    categoryOption: LifeEventCategoryProp[]
+    typeOption: LifeEventCategoryProp[]
     setValid: (valid: boolean) => void
     showCategory: boolean
-    // event: EventCategory
+    event: EventCategory
+    formRef: React.MutableRefObject<FormikProps<{}>>
     
 }
 // const newLead: Lead = new Lead
@@ -64,16 +66,18 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
     const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
     const [firstTextFieldValue, setFirstTextFieldValue] = React.useState('');
     const [secondTextFieldValue, setSecondTextFieldValue] = React.useState('');
-    // const [categoryOption, setCategoryOption] = React.useState<LifeEventCategoryProp[]>(props.categoryOption)
+    // const [typeOption, settypeOption] = React.useState<LifeEventCategoryProp[]>(props.typeOption)
 
-    const optionCategory = React.useRef<LifeEventCategoryProp[]>(props.categoryOption)
-    // const { event } = props
+    const optionCategory = React.useRef<LifeEventCategoryProp[]>(props.typeOption)
+    const event  = props.event as EventCategory
 
-    const [selectedItem, setSelectedItem] = React.useState<MyFormValues>();
+    // event.setValues(setForm)
 
-    // const selectedItem = React.useRef<MyFormValues>()
+    
 
-    // const d: {} | undefined = selectedItem?.type
+    const [selectedItem, setSelectedItem] = React.useState<IObjectHash>();
+
+    // const selectedItem = React.useRef<MyFormValues>
 
     
 
@@ -105,7 +109,7 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
     
 
 
-    // console.log(categoryOption)
+    // console.log(typeOption)
   
     // const onChangeFirstTextFieldValue = React.useCallback(
     //     (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
@@ -134,30 +138,23 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
         // }
         const selectedCategory = optionCategory.current.find(e => e.key.toString().startsWith(values.category.key));
         return selectedCategory && selectedCategory.type ? selectedCategory.type : [];
-        // let d: any[] = []
-        // e.forEach(e => d.push(e.text))
+
         // return [];
         
     }, [])
 
     React.useEffect(() => {
-        const transformData = async (data?: MyFormValues) => {
-
+        const transformData = async (data?: IObjectHash) => {
             const newData = {
                 category: data?.category.text,
                 date: data?.date,
                 detail: data?.detail,
                 type: data?.type.text
             };
-
             if(newData.category) {
                 return await postData(newData)
             }
-            
-            
         };
-        
-
         transformData(selectedItem)
     }, [selectedItem])
 
@@ -167,31 +164,33 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                 initialValues={setForm} //event.writableFields
                 validationSchema={Yup.object().shape({
                     category: Yup.object({
-                        text: Yup.string().required('Required')
+                        key: Yup.number().required('Required')
                     }).required('Required').nullable(),
                     type: Yup.object({
-                        text: Yup.string().required('Required')
+                        key: Yup.number().required('Required')
                     }).required('Required').nullable(),
                     detail: Yup.string(),
                     date: Yup.string().required('Required'),
                 })} //event.validate
                 enableReinitialize={true}
-                onSubmit={async(values, actions) => {
-                    // console.log( values );
-                    // selectedItem.current = values
-                    // const newData = {
-                    //     category: values.category.text,
-                    //     date: values.date,
-                    //     detail: values.detail,
-                    //     type: values.type.text
-                    // };
-                    // await postData(newData)
-                    actions.resetForm()
-                    // console.log(transformData(values))
-                    setSelectedItem(values)
-                    // console.log(JSON.stringify(values, null, 2));
-                    actions.setSubmitting(true);
-                }}
+                innerRef={props.formRef}
+                onSubmit={() => {}}
+                // onSubmit={(values, actions) => {
+                //     // console.log( values );
+                //     // selectedItem.current = values
+                //     // const newData = {
+                //     //     category: values.category.text,
+                //     //     date: values.date,
+                //     //     detail: values.detail,
+                //     //     type: values.type.text
+                //     // };
+                //     // await postData(newData)
+                //     actions.resetForm()
+                //     // console.log(transformData(values))
+                //     setSelectedItem(values as MyFormValues)
+                //     // console.log(JSON.stringify(values, null, 2));
+                //     actions.setSubmitting(true);
+                // }}
             
                 component={({values, touched, errors, ...formprops}) => (
                     <Form>
@@ -212,7 +211,7 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                                         placeholder=""
                                         label="Select event type"
                                         options={getOptions(values)}
-                                        disabled={!(values as any).category}
+                                        disabled={!(values as any).type}
                                         styles={dropdownStyles}
 
                                     />
@@ -251,7 +250,7 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                             </StackItem>
                         </Stack>
                         <FormikValidityObserver callback={props.setValid} />
-                        <button type="submit">Submit</button>
+                        {/* <button type="submit">Submit</button> */}
                     </Form>
                 )}
             />
