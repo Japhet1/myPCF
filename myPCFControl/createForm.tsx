@@ -52,10 +52,10 @@ interface CreateFormProp {
 // const newLead: Lead = new Lead
 
 const setForm = {
-    category: {key: '', text: '', type:[ {key: '', text: ''}]},
-    type: {key: '', text: ''},
-    detail: "",
-    date: ""
+    category: '',
+    type: '',
+    detail: '',
+    date: ''
 }
 
 // const valid = newLead.validate(setForm)
@@ -172,6 +172,7 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                     detail: Yup.string(),
                     date: Yup.string().required('Required'),
                 })} //event.validate
+                validateOnMount={true}
                 enableReinitialize={true}
                 innerRef={props.formRef}
                 onSubmit={() => {}}
@@ -211,7 +212,7 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                                         placeholder=""
                                         label="Select event type"
                                         options={getOptions(values)}
-                                        disabled={!(values as any).type}
+                                        disabled={!(values as any).category}
                                         styles={dropdownStyles}
 
                                     />
@@ -223,16 +224,6 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                                     label="Details"
                                     styles={textFieldStyles}
                                 />
-                                 {/* <div>
-                                    <label htmlFor="selectedOption">Choose an option:</label>
-                                    <Field as="select" name="selectedOption">
-                                        {optionCategory.current.map(option => (
-                                            <option key={option.key} value={option.text}>
-                                            {option.text}
-                                            </option>
-                                        ))}
-                                    </Field>
-                                </div> */}
                             </StackItem>
                             <StackItem>
                                 <FieldDatePicker

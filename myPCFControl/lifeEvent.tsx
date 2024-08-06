@@ -6,6 +6,9 @@ import { LifeEventTile } from "./lifeEventTile"
 import { SummaryProp } from "./DummyData/summaryData"
 import { AddLifeEvent } from "./addLifeEvent"
 import { mergeStyleSets } from "@fluentui/merge-styles"
+import { fetchData, EventProp } from "./Api/api"
+import { IChoice } from "pcf-core"
+
 
 
 const addIcon: IIconProps = { iconName: 'Add'}
@@ -38,6 +41,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
     // const [lifeEventCategory, setLifeEventCategory] = React.useState<LifeEventCategoryProp[]>(LifeEventCategoryData)
     const lifeEventCategory = React.useRef<LifeEventCategoryProp[]>(LifeEventCategoryData)
+    const [item, setItem] = React.useState<EventProp[]>()
     // console.log(Object.entries(props.contactEvent).map(([key, value]) => ({
     //     key,
     //     value
@@ -61,6 +65,21 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
     // }
 
+    React.useEffect(() => {
+        const a = async () => {
+            const data = await fetchData()
+
+            setItem(data)
+        }
+        a()
+    },[])
+
+    // const getEvents = (category: LifeEventCategoryProp) => {
+    //     return item.filter(e => e.category === category.text) as EventProp[]
+    // }
+
+    console.log(item.filter(e => e.category))
+
     return (
         <Panel>
             <PanelHeader>
@@ -77,7 +96,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
             <PanelContent>
                 <div className={classNames.tiles}>
                     {lifeEventCategory && lifeEventCategory.current.map((category) => (
-                        <LifeEventTile category={category} />
+                        <LifeEventTile  category={category} />
                     ))}   
                 </div>
             </PanelContent>

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export interface EventProp {
+    id: string,
     category: string,
     type: string,
     detail: string,
@@ -8,10 +9,11 @@ export interface EventProp {
 }
 
 
-export const fetchData = async () => {
+export const fetchData = async (): Promise<EventProp[]> => {
     try {
         const response = await axios.get("http://localhost:3001/events/")
         console.log(response.data)
+        return response.data
     } catch (error) {
         console.error("Error fetching post:", error)
     }

@@ -1,5 +1,6 @@
 {
   "category": [],
+  "type": [],
   "events": [
     {
       "id": "8c89",
@@ -35,6 +36,41 @@
       "date": "2024-08-20T00:00:00.000Z",
       "detail": "Testing",
       "type": "High school"
+    },
+    {
+      "id": "296d",
+      "category": "Education",
+      "date": "2024-08-24T00:00:00.000Z",
+      "detail": "Just testing",
+      "type": "Master degree"
+    },
+    {
+      "id": "5bf1",
+      "category": "Health",
+      "date": "2024-08-29T00:00:00.000Z",
+      "detail": "Testing",
+      "type": "Procedure"
+    },
+    {
+      "id": "5f7d",
+      "category": "Education",
+      "date": "2024-08-30T00:00:00.000Z",
+      "detail": "sample",
+      "type": "Bachelor degree"
+    },
+    {
+      "id": "ec8c",
+      "category": "Education",
+      "date": "2024-08-30T00:00:00.000Z",
+      "detail": "sample",
+      "type": "Bachelor degree"
+    },
+    {
+      "id": "7b19",
+      "category": "Employment",
+      "date": "2024-08-29T00:00:00.000Z",
+      "detail": "testing",
+      "type": "Job ended"
     }
   ]
 }

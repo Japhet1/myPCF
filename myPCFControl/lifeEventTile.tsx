@@ -4,8 +4,9 @@ import { Panel, PanelHeader, PanelHeaderFlexible } from "pcf-components/lib/pane
 import { StackItem, Stack } from "@fluentui/react/lib/Stack"
 import { IconButton } from "@fluentui/react/lib/Button"
 import { mergeStyleSets, Text } from "@fluentui/react"
+import { fetchData, EventProp } from "./Api/api"
 
-const stackGap = {childrenGap: 12}
+const stackGap = { childrenGap: 12}
 
 
 const classNames = mergeStyleSets({
@@ -19,6 +20,7 @@ const classNames = mergeStyleSets({
 export interface LifeEventTileProp {
     category: LifeEventCategoryProp,
     // event: any[]
+    // item: EventProp[]
 }
 
 const categoryiconname = (category: LifeEventCategoryProp) => {
@@ -41,8 +43,22 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
 
     // console.log(props.event)
 
+    // const newEvent = JSON.parse(fetchData())
+
+    // const countEvents = newEvent.filter()
+    // console.log(fetchData())
+    // const count = props.item.reduce((acc, item) => {
+    //     acc[item.category] = (acc[item.category] || 0) + 1;
+    //     return acc;
+    // }, {});
+
+    const count = 0
+
+    // console.log(count)
+
     return (
-        <PanelHeaderFlexible>
+        <Panel>
+            <PanelHeaderFlexible>
             <Stack horizontal tokens={stackGap}>
                 <IconButton iconProps={{iconName: categoryiconname(props.category)}} className={classNames.iconBackgound} />
                 <StackItem>
@@ -53,14 +69,12 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     </Stack>
                     <Stack>
                         <StackItem>
-                            <Text variant="smallPlus"> events</Text>
+                            <Text variant="smallPlus">{count} events</Text>
                         </StackItem>
                     </Stack>
-                    
-                    
                 </StackItem>
             </Stack>
-        </PanelHeaderFlexible>
-        // <>hi</>
+            </PanelHeaderFlexible>
+        </Panel>
     )
 }

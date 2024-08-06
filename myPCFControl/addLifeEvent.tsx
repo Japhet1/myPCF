@@ -10,7 +10,7 @@ import { CreateForm } from './createForm';
 import { LifeEventCategoryProp } from './DummyData/categoryData';
 import { EventCategory } from './model';
 import { FormikHelpers, FormikProps } from 'formik';
-import { IObjectHash } from 'pcf-core';
+import { IChoice, IObjectHash } from 'pcf-core';
 import { useAsync } from 'pcf-components/lib/hooks';
 import { postData } from './Api/api';
 
@@ -53,7 +53,8 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   const initialEventValues = React.useRef<EventCategory>()
 
   const formRef = React.useRef<FormikProps<IObjectHash>>()
-  const actionRef = React.useRef<FormikHelpers<{}>>()
+  
+  // const setType = React.useRef<IChoice>()
 
   // const [execute, pending, value, error] = useAsync(async () => {
   //   const isNew = initialEventValues.current.isNew();
@@ -94,6 +95,8 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
                 type: formRef.current.values.type.text
             };
             await postData(newData)
+
+            toggleHideDialog()
             
           console.log(newData)
         }
