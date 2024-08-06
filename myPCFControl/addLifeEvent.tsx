@@ -103,9 +103,6 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   }
 
 
-  React.useEffect(() => {
-    
-  })
   
 
   return (

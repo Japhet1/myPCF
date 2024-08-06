@@ -41,7 +41,9 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
     // const [lifeEventCategory, setLifeEventCategory] = React.useState<LifeEventCategoryProp[]>(LifeEventCategoryData)
     const lifeEventCategory = React.useRef<LifeEventCategoryProp[]>(LifeEventCategoryData)
-    const [item, setItem] = React.useState<EventProp[]>()
+    const [item, setItem] = React.useState<EventProp[]>([])
+
+    // const item = React.useRef<EventProp[]>([])
     // console.log(Object.entries(props.contactEvent).map(([key, value]) => ({
     //     key,
     //     value
@@ -67,18 +69,22 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
     React.useEffect(() => {
         const a = async () => {
-            const data = await fetchData()
+            const data: EventProp[] = await fetchData()
+
+            // item.current = data
 
             setItem(data)
         }
         a()
     },[])
 
-    // const getEvents = (category: LifeEventCategoryProp) => {
-    //     return item.filter(e => e.category === category.text) as EventProp[]
-    // }
+    const getEvents = (category: LifeEventCategoryProp) => {
+        return item.filter(e => e.category === category.text).map(e => e.category)
+    }
 
-    console.log(item.filter(e => e.category))
+    
+
+    // console.log(item.map(e => e.category))
 
     return (
         <Panel>
@@ -96,7 +102,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
             <PanelContent>
                 <div className={classNames.tiles}>
                     {lifeEventCategory && lifeEventCategory.current.map((category) => (
-                        <LifeEventTile  category={category} />
+                        <LifeEventTile item={item} category={category} />
                     ))}   
                 </div>
             </PanelContent>

@@ -55,7 +55,7 @@ const setForm = {
     category: '',
     type: '',
     detail: '',
-    date: ''
+    date: new Date()
 }
 
 // const valid = newLead.validate(setForm)
@@ -143,20 +143,20 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
         
     }, [])
 
-    React.useEffect(() => {
-        const transformData = async (data?: IObjectHash) => {
-            const newData = {
-                category: data?.category.text,
-                date: data?.date,
-                detail: data?.detail,
-                type: data?.type.text
-            };
-            if(newData.category) {
-                return await postData(newData)
-            }
-        };
-        transformData(selectedItem)
-    }, [selectedItem])
+    // React.useEffect(() => {
+    //     const transformData = async (data?: IObjectHash) => {
+    //         const newData = {
+    //             category: data?.category.text,
+    //             date: data?.date,
+    //             detail: data?.detail,
+    //             type: data?.type.text
+    //         };
+    //         if(newData.category) {
+    //             return await postData(newData)
+    //         }
+    //     };
+    //     transformData(selectedItem)
+    // }, [selectedItem])
 
     return (
         <div>

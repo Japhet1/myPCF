@@ -71,6 +71,20 @@
       "date": "2024-08-29T00:00:00.000Z",
       "detail": "testing",
       "type": "Job ended"
+    },
+    {
+      "id": "fb12",
+      "category": "Health",
+      "date": "2024-08-22T00:00:00.000Z",
+      "detail": "testing",
+      "type": "Serious illness"
+    },
+    {
+      "id": "1e21",
+      "category": "Employment",
+      "date": "2024-08-29T00:00:00.000Z",
+      "detail": "testing",
+      "type": "Retirement"
     }
   ]
 }
