@@ -5,11 +5,11 @@ import { mergeStyleSets, values } from "@fluentui/react";
 import { Dropdown, IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
 import { TextField, ITextFieldStyles } from "@fluentui/react/lib/TextField";
 import { DatePicker, DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
-import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData";
+// import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData";
 import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
 import { EventCategory } from "./model";
 import * as Yup from "yup"
-import { postData } from "./Api/api";
+import { postData, LifeEventCategoryProp } from "./Api/api";
 import { IObjectHash } from "pcf-core";
   
 const stackgap = { childrenGap: 20 }
@@ -55,7 +55,7 @@ const setForm = {
     category: '',
     type: '',
     detail: '',
-    date: new Date()
+    date: ''
 }
 
 // const valid = newLead.validate(setForm)
@@ -69,9 +69,11 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
     // const [typeOption, settypeOption] = React.useState<LifeEventCategoryProp[]>(props.typeOption)
 
     const optionCategory = React.useRef<LifeEventCategoryProp[]>(props.typeOption)
-    const event  = props.event as EventCategory
+    // const event  = props.event as EventCategory
 
     // event.setValues(setForm)
+
+    // console.log(props.typeOption)
 
     
 

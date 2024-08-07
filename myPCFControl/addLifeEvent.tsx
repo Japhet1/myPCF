@@ -7,12 +7,13 @@ import { ContextualMenu } from '@fluentui/react/lib/ContextualMenu';
 import { useId, useBoolean } from '@fluentui/react-hooks';
 import { IIconProps, mergeStyleSets } from '@fluentui/react';
 import { CreateForm } from './createForm';
-import { LifeEventCategoryProp } from './DummyData/categoryData';
+// import { LifeEventCategoryProp } from './DummyData/categoryData';
 import { EventCategory } from './model';
 import { FormikHelpers, FormikProps } from 'formik';
 import { IChoice, IObjectHash } from 'pcf-core';
 import { useAsync } from 'pcf-components/lib/hooks';
-import { postData } from './Api/api';
+import { postData, LifeEventCategoryProp } from './Api/api';
+import { AppContext } from './Context/eventContext';
 
 
 
@@ -38,6 +39,7 @@ const dialogContentProps = {
 
 export interface AddLifeEventProp {
   lifeEventCategory: LifeEventCategoryProp[]
+  oncancel: () => void
 }
 
 export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
@@ -49,10 +51,17 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
 
   const showCategory = React.useRef(!props.lifeEventCategory)
 
-  const lifeEvent = React.useRef<LifeEventCategoryProp[]>(props.lifeEventCategory)
+  const lifeEvent = React.useRef<LifeEventCategoryProp[]>()
+
+  lifeEvent.current = props.lifeEventCategory
   const initialEventValues = React.useRef<EventCategory>()
 
   const formRef = React.useRef<FormikProps<IObjectHash>>()
+
+  const { dispatch  } = React.useContext(AppContext)
+
+
+  // console.log(lifeEvent.current)
   
   // const setType = React.useRef<IChoice>()
 
@@ -93,10 +102,11 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
                 date: formRef.current.values.date,
                 detail: formRef.current.values.detail,
                 type: formRef.current.values.type.text
-            };
-            await postData(newData)
+          };
+          const data =  await postData(newData)
+          dispatch({type: 'ADD_DATA', payload: data})
 
-            toggleHideDialog()
+            props.oncancel()
             
           console.log(newData)
         }
@@ -107,10 +117,10 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
 
   return (
     <>
-      <CommandBarButton iconProps={addIcon} text='Add event' onClick={toggleHideDialog} className={classNames.cmdButton} />
+      {/* <CommandBarButton iconProps={addIcon} text='Add event' onClick={toggleHideDialog} className={classNames.cmdButton} /> */}
       <Dialog
-        hidden={hideDialog}
-        onDismiss={toggleHideDialog}
+        hidden={false}
+        onDismiss={props.oncancel}
         dialogContentProps={dialogContentProps}
         modalProps={modalProps}
         maxWidth={493}
@@ -120,7 +130,7 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
         {/* <CreateForm event={lifeEvent.current} setValid={callbackOnSave} categoryOption={props.lifeEventCategory} /> */}
         <DialogFooter>
           <PrimaryButton onClick={onsave} text="Save" disabled={!isValid} />
-          <DefaultButton onClick={toggleHideDialog} text="Cancel" />
+          <DefaultButton onClick={props.oncancel} text="Cancel" />
         </DialogFooter>
       </Dialog>
     </>

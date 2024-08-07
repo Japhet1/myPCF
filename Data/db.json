@@ -1,90 +1,138 @@
 {
-  "category": [],
+  "category": [
+    {
+      "id": "1",
+      "key": "1",
+      "text": "Education",
+      "type": [
+        {
+          "key": "1",
+          "text": "Associate degree"
+        },
+        {
+          "key": "2",
+          "text": "Bachelor degree"
+        },
+        {
+          "key": "3",
+          "text": "Doctorate degree"
+        },
+        {
+          "key": "4",
+          "text": "High school"
+        },
+        {
+          "key": "5",
+          "text": "Master degree"
+        },
+        {
+          "key": "6",
+          "text": "Other"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "key": "2",
+      "text": "Employment",
+      "type": [
+        {
+          "key": "1",
+          "text": "Business closed"
+        },
+        {
+          "key": "2",
+          "text": "Business started"
+        },
+        {
+          "key": "3",
+          "text": "Job started"
+        },
+        {
+          "key": "4",
+          "text": "Job ended"
+        },
+        {
+          "key": "5",
+          "text": "Retirement"
+        },
+        {
+          "key": "6",
+          "text": "Other"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "key": "3",
+      "text": "Health",
+      "type": [
+        {
+          "key": "1",
+          "text": "Hospital/Facility stay"
+        },
+        {
+          "key": "2",
+          "text": "Procedure"
+        },
+        {
+          "key": "3",
+          "text": "Serious illness"
+        },
+        {
+          "key": "4",
+          "text": "Other"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "key": "4",
+      "text": "Other",
+      "type": [
+        {
+          "key": "1",
+          "text": "Other"
+        }
+      ]
+    }
+  ],
   "type": [],
   "events": [
     {
-      "id": "8c89",
-      "category": "Employment",
-      "date": "2024-08-14T00:00:00.000Z",
-      "detail": "testing",
-      "type": "Business closed"
-    },
-    {
-      "id": "83f3",
+      "id": "6c9d",
       "category": "Education",
-      "date": "2024-08-19T00:00:00.000Z",
-      "detail": "testing",
-      "type": "Bachelor degree"
-    },
-    {
-      "id": "ff46",
-      "category": "Health",
-      "date": "2024-08-10T00:00:00.000Z",
-      "detail": "testing",
-      "type": "Serious illness"
-    },
-    {
-      "id": "e30a",
-      "category": "Employment",
       "date": "2024-08-16T00:00:00.000Z",
-      "detail": "testing",
-      "type": "Retirement"
-    },
-    {
-      "id": "70d0",
-      "category": "Education",
-      "date": "2024-08-20T00:00:00.000Z",
       "detail": "Testing",
-      "type": "High school"
-    },
-    {
-      "id": "296d",
-      "category": "Education",
-      "date": "2024-08-24T00:00:00.000Z",
-      "detail": "Just testing",
       "type": "Master degree"
     },
     {
-      "id": "5bf1",
-      "category": "Health",
-      "date": "2024-08-29T00:00:00.000Z",
-      "detail": "Testing",
-      "type": "Procedure"
-    },
-    {
-      "id": "5f7d",
-      "category": "Education",
-      "date": "2024-08-30T00:00:00.000Z",
-      "detail": "sample",
-      "type": "Bachelor degree"
-    },
-    {
-      "id": "ec8c",
-      "category": "Education",
-      "date": "2024-08-30T00:00:00.000Z",
-      "detail": "sample",
-      "type": "Bachelor degree"
-    },
-    {
-      "id": "7b19",
+      "id": "aa0c",
       "category": "Employment",
-      "date": "2024-08-29T00:00:00.000Z",
-      "detail": "testing",
-      "type": "Job ended"
+      "date": "2024-08-11T00:00:00.000Z",
+      "detail": "employ",
+      "type": "Job started"
     },
     {
-      "id": "fb12",
+      "id": "0c2f",
       "category": "Health",
-      "date": "2024-08-22T00:00:00.000Z",
-      "detail": "testing",
+      "date": "2024-08-23T00:00:00.000Z",
+      "detail": "Headache",
       "type": "Serious illness"
     },
     {
-      "id": "1e21",
+      "id": "7401",
       "category": "Employment",
-      "date": "2024-08-29T00:00:00.000Z",
-      "detail": "testing",
-      "type": "Retirement"
+      "date": "2024-08-12T00:00:00.000Z",
+      "detail": "another",
+      "type": "Business started"
+    },
+    {
+      "id": "c0eb",
+      "category": "Education",
+      "date": "2024-08-19T00:00:00.000Z",
+      "detail": "learning",
+      "type": "High school"
     }
   ]
 }

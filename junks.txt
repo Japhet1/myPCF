@@ -1,154 +1,186 @@
-import * as React from "react"
-import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from 'formik';
-import { IStackTokens, Stack, StackItem } from "@fluentui/react/lib/Stack";
-import { mergeStyleSets, values } from "@fluentui/react";
-import { Dropdown, IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
-import { TextField, ITextFieldStyles } from "@fluentui/react/lib/TextField";
-import { DatePicker, DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
-import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData";
-import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
-import * as Yup from "yup"
-import { postData } from "./Api/api";
-  
-const stackgap = { childrenGap: 20 }
-const stackGap: IStackTokens = { childrenGap: 20 }
+// npx create-react-app my-app --template typescript
+// cd my-app
 
-const classNames = mergeStyleSets({
-    container: {
-        width: '100%'
-    }
-})
+// Step 2: Create Context and Reducer
+// Create a context and a reducer to manage the state.
 
-const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 418 } };
-const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 200 } };
+// src/context/AppContext.tsx
 
-const days: IDropdownOption[] = [
-    { text: 'Sunday', key: DayOfWeek.Sunday },
-    { text: 'Monday', key: DayOfWeek.Monday },
-    { text: 'Tuesday', key: DayOfWeek.Tuesday },
-    { text: 'Wednesday', key: DayOfWeek.Wednesday },
-    { text: 'Thursday', key: DayOfWeek.Thursday },
-    { text: 'Friday', key: DayOfWeek.Friday },
-    { text: 'Saturday', key: DayOfWeek.Saturday },
-]
+import React, { createContext, useReducer, ReactNode } from 'react';
 
-interface MyFormValues {
-    category: {key: string, text: string, type: {}[]},
-    type: {key: string, text: string},
-    detail: string,
-    date: string
+interface State {
+  data: any[];
 }
-interface CreateFormProp {
-    categoryOption: LifeEventCategoryProp[]
-    setValid: (valid: boolean) => void
-    showCategory: boolean
-}
-const setForm = {
-    category: {key: '', text: '', type: [{}]},
-    type: {key: '', text: ''},
-    detail: "",
-    date: ""
-}
-export const CreateForm: React.FC<CreateFormProp> = (props) => {
-    const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
-    const [firstTextFieldValue, setFirstTextFieldValue] = React.useState('');
-    const [secondTextFieldValue, setSecondTextFieldValue] = React.useState('');
-    const optionCategory = React.useRef<LifeEventCategoryProp[]>(props.categoryOption)
-    const [selectedItem, setSelectedItem] = React.useState<MyFormValues>(setForm);
-    React.useEffect(() => {
-        const transformData = (data: MyFormValues) => {
-            const newData = {
-                category: data.category.text,
-                date: new Date(`${data.date}`).toLocaleString(),
-                detail: data.detail,
-                type: data?.type.text
-            };
-            return postData(newData)
-        };
 
-        transformData(selectedItem)
-    }, [selectedItem])   
-    const getOptions = (values: any): IDropdownOption<any>[] => {    
-        if (values.category) {
-            const v = values.category.key;
-            const selectedCategory = optionCategory.current.find((e) => e.key.toString().startsWith(v));
-            if (selectedCategory && selectedCategory.type) {
-                return selectedCategory.type;
-            }
-        }
-        return [];
-    }
-    return (
-        <div>
-            <Formik
-                initialValues={setForm} //event.writableFields
-                validationSchema={Yup.object().shape({
-                    category: Yup.object({
-                        text: Yup.string().required('Required')
-                    }).required('Required').nullable(),
-                    type: Yup.object({
-                        text: Yup.string().required('Required')
-                    }).required('Required').nullable(),
-                    detail: Yup.string(),
-                    date: Yup.string().required('Required'),
-                })} //event.validate
-                enableReinitialize={true}
-                onSubmit={(values, actions) => {
-                    setSelectedItem(values)
-                    actions.setSubmitting(false);
-                }}
-            
-                component={({values, touched, errors, ...formprops}) => (
-                    <Form>
-                        <Stack tokens={stackGap}>
-                            <Stack horizontal tokens={stackgap}>
-                                <StackItem>
-                                    <FieldDropdown
-                                        name="category"
-                                        placeholder=""
-                                        label="Select category"
-                                        options={optionCategory.current as IDropdownOption<any>[]}
-                                        styles={dropdownStyles}  
-                                    />
-                                </StackItem>
-                                <StackItem>
-                                    <FieldDropdown
-                                        name="type"
-                                        placeholder=""
-                                        label="Select event type"
-                                        options={getOptions(values)}
-                                        disabled={!(values as any).category}
-                                        styles={dropdownStyles}
-                                    />
-                                </StackItem>
-                            </Stack>
-                            <StackItem>
-                                <FieldText
-                                    name="detail"
-                                    label="Details"
-                                    styles={textFieldStyles}
-                                />
-                            </StackItem>
-                            <StackItem>
-                                <FieldDatePicker
-                                    name="date"
-                                    label="Date"
-                                    firstDayOfWeek={firstDayOfWeek}
-                                    showWeekNumbers={true}
-                                    firstWeekOfYear={1}
-                                    showMonthPickerAsOverlay={true}
-                                    placeholder="Select a date..."
-                                    ariaLabel="Select a date"
-                                    // DatePicker uses English strings by default. For localized apps, you must override this prop.
-                                    strings={defaultDatePickerStrings}
-                                />
-                            </StackItem>
-                        </Stack>
-                        <FormikValidityObserver callback={props.setValid} />
-                        <button type="submit">Submit</button>
-                    </Form>
-                )}
-            />
-        </div>
-    );
+interface Action {
+  type: string;
+  payload?: any;
 }
+
+const initialState: State = {
+  data: [],
+};
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'SET_DATA':
+      return { ...state, data: action.payload };
+    case 'ADD_DATA':
+      return { ...state, data: [...state.data, action.payload] };
+    case 'EDIT_DATA':
+      return {
+        ...state,
+        data: state.data.map(item => item.id === action.payload.id ? action.payload : item),
+      };
+    case 'DELETE_DATA':
+      return {
+        ...state,
+        data: state.data.filter(item => item.id !== action.payload),
+      };
+    default:
+      return state;
+  }
+};
+
+const AppContext = createContext<{ state: State; dispatch: React.Dispatch<Action> }>({
+  state: initialState,
+  dispatch: () => null,
+});
+
+const AppProvider = ({ children }: { children: ReactNode }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <AppContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
+export { AppContext, AppProvider };
+
+Step 3: Create API Call Functions
+Create functions to handle API calls.
+
+src/api/api.ts
+
+const API_URL = 'https://api.example.com/data';
+
+export const fetchData = async () => {
+  const response = await fetch(API_URL);
+  return response.json();
+};
+
+export const addData = async (data: any) => {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+};
+
+export const editData = async (id: number, data: any) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+};
+
+export const deleteData = async (id: number) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
+  });
+  return response.json();
+};
+
+Step 4: Create Components to Dispatch API Calls
+Create components to dispatch the API functions.
+
+src/components/DataFetcher.tsx
+
+import React, { useContext, useEffect } from 'react';
+import { AppContext } from '../context/AppContext';
+import { fetchData } from '../api/api';
+
+const DataFetcher = () => {
+  const { dispatch } = useContext(AppContext);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await fetchData();
+      dispatch({ type: 'SET_DATA', payload: data });
+    };
+
+    getData();
+  }, [dispatch]);
+
+  return null;
+};
+
+export default DataFetcher;
+
+src/components/DataManager.tsx
+
+import React, { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
+import { addData, editData, deleteData } from '../api/api';
+
+const DataManager = () => {
+  const { dispatch } = useContext(AppContext);
+
+  const handleAdd = async (newData: any) => {
+    const data = await addData(newData);
+    dispatch({ type: 'ADD_DATA', payload: data });
+  };
+
+  const handleEdit = async (id: number, updatedData: any) => {
+    const data = await editData(id, updatedData);
+    dispatch({ type: 'EDIT_DATA', payload: data });
+  };
+
+  const handleDelete = async (id: number) => {
+    await deleteData(id);
+    dispatch({ type: 'DELETE_DATA', payload: id });
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleAdd({ id: 1, name: 'New Item' })}>Add</button>
+      <button onClick={() => handleEdit(1, { id: 1, name: 'Updated Item' })}>Edit</button>
+      <button onClick={() => handleDelete(1)}>Delete</button>
+    </div>
+  );
+};
+
+export default DataManager;
+
+Step 5: Use Components in App
+Finally, use these components in your main App component.
+
+src/App.tsx
+
+import React from 'react';
+import { AppProvider } from './context/AppContext';
+import DataFetcher from './components/DataFetcher';
+import DataManager from './components/DataManager';
+
+const App = () => {
+  return (
+    <AppProvider>
+      <div className="App">
+        <h1>React TypeScript App</h1>
+        <DataFetcher />
+        <DataManager />
+      </div>
+    </AppProvider>
+  );
+};
+
+export default App;

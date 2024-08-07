@@ -1,10 +1,10 @@
 import * as React from "react"
-import { LifeEventCategoryProp } from "./DummyData/categoryData"
+// import { LifeEventCategoryProp } from "./DummyData/categoryData"
 import { Panel, PanelContent, PanelHeader, PanelHeaderFlexible } from "pcf-components/lib/panel"
 import { StackItem, Stack } from "@fluentui/react/lib/Stack"
 import { ActionButton, IconButton } from "@fluentui/react/lib/Button"
 import { mergeStyleSets, Text } from "@fluentui/react"
-import { fetchData, EventProp } from "./Api/api"
+import { fetchData, EventProp, LifeEventCategoryProp } from "./Api/api"
 import { formatDistance, subDays } from "date-fns";
 
 const stackGap = { childrenGap: 12}
@@ -58,7 +58,7 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
 
     const detail = props.item.filter(e => e.category === props.category.text).map(e => ({type: e.type, date: e.date}))
     
-    console.log(count)
+    // console.log(count)
     // console.log(detail)
     // console.log(props.item)
 
