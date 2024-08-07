@@ -103,9 +103,6 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     <StackItem>
                         <Text variant="smallPlus">{formatDistance(subDays(new Date(detail[detail.length -1].date), 3), new Date(), { addSuffix: true })}</Text>
                     </StackItem>
-                    <StackItem>
-                    <ActionButton iconProps={{iconName: 'Add'}} onClick={showFormDlg}>Add event</ActionButton>
-                    </StackItem>
                 </Stack> )
                 :   (
                     <ActionButton iconProps={{iconName: 'Add'}} onClick={showFormDlg}>Add event</ActionButton>

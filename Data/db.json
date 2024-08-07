@@ -107,25 +107,11 @@
       "type": "Master degree"
     },
     {
-      "id": "aa0c",
-      "category": "Employment",
-      "date": "2024-08-11T00:00:00.000Z",
-      "detail": "employ",
-      "type": "Job started"
-    },
-    {
       "id": "0c2f",
       "category": "Health",
       "date": "2024-08-23T00:00:00.000Z",
       "detail": "Headache",
       "type": "Serious illness"
-    },
-    {
-      "id": "7401",
-      "category": "Employment",
-      "date": "2024-08-12T00:00:00.000Z",
-      "detail": "another",
-      "type": "Business started"
     },
     {
       "id": "c0eb",

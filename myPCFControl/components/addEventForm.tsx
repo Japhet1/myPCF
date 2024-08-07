@@ -25,7 +25,7 @@ const classNames = mergeStyleSets({
 })
 
 const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 418 } };
-const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 200 } };
+const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 418 } };
 
 const days: IDropdownOption[] = [
     { text: 'Sunday', key: DayOfWeek.Sunday },
@@ -53,13 +53,6 @@ interface AddEventFormProp {
     // formRef: React.MutableRefObject<FormikProps<{}>>
     
 }
-// const newLead: Lead = new Lead
-
-
-
-// const valid = newLead.validate(setForm)
-
-// newLead.getIdColumnName(setForm)
 
 export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
     const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
@@ -67,23 +60,6 @@ export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
     const [secondTextFieldValue, setSecondTextFieldValue] = React.useState('');
 
     const [selectedItem, setSelectedItem] = React.useState<IObjectHash>();
-
-  
-
-    // const getOptions = React.useCallback((values: any): IDropdownOption<any>[] => {
-    //     // const selectedCategory = optionCategory.current.find(e => e.key.toString().startsWith(values.category.key));
-    //     return selectedCategory && selectedCategory.type ? selectedCategory.type : [];
-        
-    // }, [])
-
-    // const typeData = props.eventForm.filter(e => e.category).map(e => ({key: e.type, text: e.type}))
-
-    // const data = props.eventForm.filter(e => e.category).map(e => ({key: e.category, text: e.category}))
-
-
-    // const categoryData = [data[0]]
-
-    // console.log(categoryData)
 
     const newData = [{
         key: props.eventForm.key,
@@ -117,18 +93,7 @@ export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
                 // onSubmit={() => {}}
                 onSubmit={(values, actions) => {
                     console.log( values );
-                    // selectedItem.current = values
-                    // const newData = {
-                    //     category: values.category.text,
-                    //     date: values.date,
-                    //     detail: values.detail,
-                    //     type: values.type.text
-                    // };
-                    // await postData(newData)
                     actions.resetForm()
-                    // console.log(transformData(values))
-                    // setSelectedItem(values as MyFormValues)
-                    // console.log(JSON.stringify(values, null, 2));
                     actions.setSubmitting(true);
                 }}
             
@@ -152,7 +117,7 @@ export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
                                         label="Select event type"
                                         options={props.eventForm.type}
                                         // disabled={!(values as any).category}
-                                        styles={textFieldStyles}
+                                        styles={dropdownStyles}
 
                                     />
                                 </StackItem>
