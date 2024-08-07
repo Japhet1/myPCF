@@ -76,7 +76,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
     // }
     
-    console.log(state)
+    // console.log(state)
 
     React.useEffect(() => {
         const getData = async () => {
@@ -84,8 +84,8 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
             setLifeEventCategory(categories)
             const events = await fetchData();
             setItem(events)
-            console.log(categories)
-            console.log(events)
+            // console.log(categories)
+            // console.log(events)
             // dispatch({ type: 'SET_CATEGORY', payload: categories });
             // dispatch({ type: 'SET_EVENTS', payload: events });
         };

@@ -6,6 +6,8 @@ import { ActionButton, IconButton } from "@fluentui/react/lib/Button"
 import { mergeStyleSets, Text } from "@fluentui/react"
 import { fetchData, EventProp, LifeEventCategoryProp } from "./Api/api"
 import { formatDistance, subDays } from "date-fns";
+import { useBoolean } from "pcf-components"
+import { EventAddForm } from "./components/eventAddForm"
 
 const stackGap = { childrenGap: 12}
 
@@ -17,6 +19,11 @@ const classNames = mergeStyleSets({
         color: "white"
     }
 })
+
+interface Item {
+    category: string,
+    type: string
+}
 
 export interface LifeEventTileProp {
     category: LifeEventCategoryProp,
@@ -40,6 +47,10 @@ const categoryiconname = (category: LifeEventCategoryProp) => {
 
 export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
 
+    const [formDlg, {setTrue: showFormDlg, setFalse: hideFormDlg}] = useBoolean(false)
+
+    const formDataEvent = React.useRef<LifeEventCategoryProp>()
+
     // console.log(props.category.text)
 
     // console.log(props.event)
@@ -58,9 +69,11 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
 
     const detail = props.item.filter(e => e.category === props.category.text).map(e => ({type: e.type, date: e.date}))
     
+    const formData = props.item.filter(e => e.category === props.category.text).map(e => ({category: e.category, type: e.type}))
+    formDataEvent.current = props.category
     // console.log(count)
-    // console.log(detail)
-    // console.log(props.item)
+    // console.log(props.category)
+    // console.log(formData)
 
     return (
         <Panel>
@@ -90,11 +103,16 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     <StackItem>
                         <Text variant="smallPlus">{formatDistance(subDays(new Date(detail[detail.length -1].date), 3), new Date(), { addSuffix: true })}</Text>
                     </StackItem>
+                    <StackItem>
+                    <ActionButton iconProps={{iconName: 'Add'}} onClick={showFormDlg}>Add event</ActionButton>
+                    </StackItem>
                 </Stack> )
-            :   (
-                <ActionButton iconProps={{iconName: 'Add'}}>Add event</ActionButton>
-            )  
+                :   (
+                    <ActionButton iconProps={{iconName: 'Add'}} onClick={showFormDlg}>Add event</ActionButton>
+                    
+                )  
             }
+            {formDlg && <EventAddForm onFormCancel={hideFormDlg} formData={formDataEvent.current} />}
                 
             </PanelContent>
         </Panel>
