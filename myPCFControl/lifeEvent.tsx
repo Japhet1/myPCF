@@ -121,12 +121,18 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
     },[dispatch])
 
     const getEvents = (category: LifeEventCategoryProp) => {
-        return item.filter(e => e.category === category.text).map(e => e.category)
+        return item.filter(e => e.category === category.text).map(e => ({
+            id: e.id,
+            category: e.category,
+            date: e.date,
+            detail: e.detail,
+            type: e.type
+        }))
     }
 
     
 
-    // console.log(fetchCategory())
+    // console.log(item)
 
     return (
         <AppProvider>
@@ -146,7 +152,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
             <PanelContent>
                 <div className={classNames.tiles}>
                     {lifeEventCategory.map((category) => (
-                        <LifeEventTile item={item} category={category} />
+                        <LifeEventTile item={item} getevent={getEvents(category)} category={category} />
                     ))}   
                 </div>
                 {openDlg && <AddLifeEvent oncancel={hideDlg} lifeEventCategory={lifeEventCategory}  />}

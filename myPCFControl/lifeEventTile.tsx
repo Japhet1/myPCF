@@ -21,8 +21,11 @@ const classNames = mergeStyleSets({
     }
 })
 
-interface Item {
+export interface Item {
+    id: string,
     category: string,
+    date: string,
+    detail: string,
     type: string
 }
 
@@ -30,6 +33,7 @@ export interface LifeEventTileProp {
     category: LifeEventCategoryProp,
     // event: any[]
     item: EventProp[]
+    getevent: Item[]
 }
 
 const categoryiconname = (category: LifeEventCategoryProp) => {
@@ -75,7 +79,7 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
     formDataEvent.current = props.category
     // console.log(count)
     // console.log(props.category)
-    // console.log(formData)
+    // console.log(props.getevent)
 
     return (
         <Panel onClick={showPanelDlg}>
@@ -112,7 +116,7 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                 )  
             }
                 {formDlg && <EventAddForm onFormCancel={hideFormDlg} formData={formDataEvent.current} />}
-                {panelDlg && <EventList onhide={hidePanelDlg} panelData={formDataEvent.current}/>}
+                {panelDlg && <EventList listevent={props.getevent} onhide={hidePanelDlg} addevent={showFormDlg} panelData={formDataEvent.current}/>}
                 
             </PanelContent>
         </Panel>

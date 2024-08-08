@@ -147,6 +147,13 @@
       "date": "2024-08-04T00:00:00.000Z",
       "detail": "learning",
       "type": "High school"
+    },
+    {
+      "id": "522c",
+      "category": "Education",
+      "date": "2024-08-14T00:00:00.000Z",
+      "detail": "another",
+      "type": "Doctorate degree"
     }
   ]
 }
