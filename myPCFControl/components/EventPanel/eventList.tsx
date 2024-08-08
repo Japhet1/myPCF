@@ -12,6 +12,7 @@ import { format } from 'date-fns'
 import { ConfirmDialog, useBoolean } from 'pcf-components'
 // import { MoreVertical} from '@fluentui/react/lib/Icon'
 import { IconButton } from '@fluentui/react/lib/Button';
+import { ContextualMenu } from '@fluentui/react/lib/ContextualMenu'
 import { DeleteEvent } from '../deleteEvent'
 
 
@@ -43,6 +44,32 @@ interface EventListProp {
 export const EventList: React.FC<EventListProp> = (props) => {
 
     const [deleteDlg, {setTrue: showDeleteDlg, setFalse: hideDeleteDlg}] = useBoolean(false)
+    const [itemId, setItemId] = React.useState('')
+    // const itemId = React.useRef<string>('')
+
+    const [menuVisible, setMenuVisible] = React.useState(false);
+    const [target, setTarget] = React.useState(null);
+  
+    const menuItems = [
+      {
+        key: 'edit',
+        text: 'Edit',
+        iconProps: { iconName: 'Edit' },
+        onClick: () => console.log('Edit action')
+      },
+      {
+        key: 'delete',
+        text: 'Delete',
+        iconProps: { iconName: 'Delete' },
+        onClick: () => showDeleteDlg()
+      }
+    ];
+  
+    const onClick = (event) => {
+      setTarget(event.currentTarget);
+      setMenuVisible(!menuVisible);
+      
+    };
 
 
     const footerContent = React.useCallback(() => (
@@ -52,23 +79,42 @@ export const EventList: React.FC<EventListProp> = (props) => {
 
     ), [props.addevent])
 
+    // console.log(props.listevent.reverse())
+    // console.log(itemId)
+
     const onRenderCell = (item: Item, index?: number) => {
+        setItemId(item.id)
+        // itemId.current = item.id
+        console.log(item.id)
         return (
-            <Stack horizontal horizontalAlign='space-between' className={classNames.list}>
-                <Stack >
+            <div key={item.id}>
+                <Stack horizontal horizontalAlign='space-between' className={classNames.list}>
+                    <Stack >
+                        <StackItem>
+                            <Text className={classNames.header}>{item.type}</Text>
+                        </StackItem>
+                        <StackItem>
+                            <Text>{format(new Date(item.date), "MMMM d, yyyy")}</Text>
+                        </StackItem>
+                        <StackItem>
+                            <Text className={classNames.detail}>{item.detail}</Text>
+                        </StackItem>
+                    </Stack>
                     <StackItem>
-                        <Text className={classNames.header}>{item.type}</Text>
+                        {/* <IconButton iconProps={{iconName: 'MoreVertical'}} onClick={showDeleteDlg}/> */}
+                        {/* {deleteDlg && <DeleteEvent eventcancel={hideDeleteDlg} eventid={itemId}/>} */}
+                        <IconButton
+                            iconProps={{ iconName: 'MoreVertical' }}
+                            onClick={onClick}
+                            
+                        />
+                        
+                        
                     </StackItem>
-                    <StackItem>
-                        <Text>{format(new Date(item.date), "MMMM d, yyyy")}</Text>
-                    </StackItem>
-                    <StackItem>
-                        <Text className={classNames.detail}>{item.detail}</Text>
-                    </StackItem>
+                    
                 </Stack>
-                <StackItem><IconButton iconProps={{iconName: 'MoreVertical'}} onClick={showDeleteDlg}/></StackItem>
-                
-            </Stack>
+            
+            </div>
         )
     }
     
@@ -83,7 +129,6 @@ export const EventList: React.FC<EventListProp> = (props) => {
         closeButtonAriaLabel="Close"
         isFooterAtBottom={true}
         headerText={props.panelData.text}
-        // styles={props.events.length > 0 ? panelStyle : emptyPanel}
         onRenderFooterContent={footerContent}
         >
             <>
@@ -95,7 +140,14 @@ export const EventList: React.FC<EventListProp> = (props) => {
                         <Stack>{footerContent()}</Stack>
                     </Stack>
                 }
-                {deleteDlg && <DeleteEvent eventcancel={hideDeleteDlg} />}
+                {deleteDlg && <DeleteEvent eventcancel={hideDeleteDlg} eventid={itemId} />}
+                {menuVisible && (
+                    <ContextualMenu
+                        items={menuItems}
+                        target={target}
+                        onDismiss={() => setMenuVisible(false)}
+                        />
+                    )}
             </>
         </Panel>
     )
