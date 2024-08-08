@@ -12,7 +12,7 @@ import * as Yup from "yup"
 // import { postData, LifeEventCategoryProp } from "./Api/api";
 import { IObjectHash } from "pcf-core";
 import { Item } from "./eventAddForm";
-import { LifeEventCategoryProp } from "../Api/api";
+import { LifeEventCategoryProp } from "../../Api/api";
 import { text } from "node:stream/consumers";
   
 const stackgap = { childrenGap: 20 }

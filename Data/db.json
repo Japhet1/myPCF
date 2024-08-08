@@ -140,6 +140,13 @@
       "date": "2024-08-12T00:00:00.000Z",
       "detail": "another",
       "type": "Serious illness"
+    },
+    {
+      "id": "446c",
+      "category": "Education",
+      "date": "2024-08-04T00:00:00.000Z",
+      "detail": "learning",
+      "type": "High school"
     }
   ]
 }

@@ -3,7 +3,7 @@ import { Dialog, DialogType, DialogFooter } from '@fluentui/react/lib/Dialog';
 import { PrimaryButton, DefaultButton, CommandBarButton } from '@fluentui/react/lib/Button';
 import { useId, useBoolean } from '@fluentui/react-hooks';
 import { AddEventForm } from './addEventForm';
-import { LifeEventCategoryProp, postData } from '../Api/api';
+import { LifeEventCategoryProp, postData } from '../../Api/api';
 import { FormikProps } from 'formik';
 import { IObjectHash } from 'pcf-core';
 

@@ -7,7 +7,8 @@ import { mergeStyleSets, Text } from "@fluentui/react"
 import { fetchData, EventProp, LifeEventCategoryProp } from "./Api/api"
 import { formatDistance, subDays } from "date-fns";
 import { useBoolean } from "pcf-components"
-import { EventAddForm } from "./components/eventAddForm"
+import { EventAddForm } from "./components/EventForm/eventAddForm"
+import { EventList } from "./components/EventPanel/eventList"
 
 const stackGap = { childrenGap: 12}
 
@@ -48,6 +49,7 @@ const categoryiconname = (category: LifeEventCategoryProp) => {
 export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
 
     const [formDlg, {setTrue: showFormDlg, setFalse: hideFormDlg}] = useBoolean(false)
+    const [panelDlg, {setTrue: showPanelDlg, setFalse: hidePanelDlg}] = useBoolean(false)
 
     const formDataEvent = React.useRef<LifeEventCategoryProp>()
 
@@ -76,7 +78,7 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
     // console.log(formData)
 
     return (
-        <Panel>
+        <Panel onClick={showPanelDlg}>
             <PanelHeaderFlexible>
             <Stack horizontal tokens={stackGap}>
                 <IconButton iconProps={{iconName: categoryiconname(props.category)}} className={classNames.iconBackgound} />
@@ -109,7 +111,8 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     
                 )  
             }
-            {formDlg && <EventAddForm onFormCancel={hideFormDlg} formData={formDataEvent.current} />}
+                {formDlg && <EventAddForm onFormCancel={hideFormDlg} formData={formDataEvent.current} />}
+                {panelDlg && <EventList onhide={hidePanelDlg}/>}
                 
             </PanelContent>
         </Panel>
