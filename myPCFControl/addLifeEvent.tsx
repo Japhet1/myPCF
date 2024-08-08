@@ -76,16 +76,16 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
 
 
 
-  const modalProps = React.useMemo(
-    () => ({
-      // titleAriaId: labelId,
-      // subtitleAriaId: subTextId,
-      isBlocking: false,
-      styles: { main: { maxWidth: 700}},
-      // dragOptions: isDraggable ? dragOptions : undefined,
-    }),
-    [isDraggable, labelId, subTextId],
-  );
+  // const modalProps = React.useMemo(
+  //   () => ({
+  //     // titleAriaId: labelId,
+  //     // subtitleAriaId: subTextId,
+  //     isBlocking: false,
+  //     styles: { main: { maxWidth: 700}},
+  //     // dragOptions: isDraggable ? dragOptions : undefined,
+  //   }),
+  //   [isDraggable, labelId, subTextId],
+  // );
 
   const callbackOnSave = React.useCallback((valid: boolean) => {
     setIsValid(valid)
@@ -122,7 +122,10 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
         hidden={false}
         onDismiss={props.oncancel}
         dialogContentProps={dialogContentProps}
-        modalProps={modalProps}
+        modalProps={{
+          isBlocking: true,
+          styles: { main: { maxWidth: 700}},
+        }}
         maxWidth={493}
         minWidth={288}
       >

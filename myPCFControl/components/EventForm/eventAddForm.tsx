@@ -43,16 +43,15 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
     }, [])
 
       
-    const modalProps = React.useMemo(
-        () => ({
-          // titleAriaId: labelId,
-          // subtitleAriaId: subTextId,
-          isBlocking: false,
-          styles: { main: { maxWidth: 700}},
-          // dragOptions: isDraggable ? dragOptions : undefined,
-        }),
-        [isDraggable, labelId, subTextId],
-      );
+    // const modalProps = React.useMemo(
+    //     () => ({
+    //       // titleAriaId: labelId,
+    //       // subtitleAriaId: subTextId,
+    //       isBlocking: true,
+    //       styles: { main: { maxWidth: 700}},
+    //       // dragOptions: isDraggable ? dragOptions : undefined,
+    //     }),
+    //   );
 
     console.log(props.formData)
 
@@ -75,7 +74,10 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
                 hidden={false}
                 onDismiss={props.onFormCancel}
                 dialogContentProps={dialogContentProps}
-                modalProps={modalProps}
+                modalProps={{
+                    isBlocking: true,
+                    styles: { main: { maxWidth: 700}},
+                }}
                 maxWidth={493}
                 minWidth={288}
             >

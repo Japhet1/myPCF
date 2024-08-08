@@ -9,6 +9,10 @@ import { EventProp } from '../../Api/api'
 import { Item } from '../../lifeEventTile'
 import { mergeStyleSets } from '@fluentui/react'
 import { format } from 'date-fns'
+import { ConfirmDialog, useBoolean } from 'pcf-components'
+// import { MoreVertical} from '@fluentui/react/lib/Icon'
+import { IconButton } from '@fluentui/react/lib/Button';
+import { DeleteEvent } from '../deleteEvent'
 
 
 
@@ -38,7 +42,7 @@ interface EventListProp {
 
 export const EventList: React.FC<EventListProp> = (props) => {
 
-    const Data = React.useRef<{}[]>()
+    const [deleteDlg, {setTrue: showDeleteDlg, setFalse: hideDeleteDlg}] = useBoolean(false)
 
 
     const footerContent = React.useCallback(() => (
@@ -50,8 +54,8 @@ export const EventList: React.FC<EventListProp> = (props) => {
 
     const onRenderCell = (item: Item, index?: number) => {
         return (
-            <div >
-                <Stack className={classNames.list}>
+            <Stack horizontal horizontalAlign='space-between' className={classNames.list}>
+                <Stack >
                     <StackItem>
                         <Text className={classNames.header}>{item.type}</Text>
                     </StackItem>
@@ -61,15 +65,12 @@ export const EventList: React.FC<EventListProp> = (props) => {
                     <StackItem>
                         <Text className={classNames.detail}>{item.detail}</Text>
                     </StackItem>
-                    
-
                 </Stack>
-            </div>
+                <StackItem><IconButton iconProps={{iconName: 'MoreVertical'}} onClick={showDeleteDlg}/></StackItem>
+                
+            </Stack>
         )
     }
-
-    Data.current = props.listevent
-
     
 
     console.log(props.listevent)
@@ -94,6 +95,7 @@ export const EventList: React.FC<EventListProp> = (props) => {
                         <Stack>{footerContent()}</Stack>
                     </Stack>
                 }
+                {deleteDlg && <DeleteEvent eventcancel={hideDeleteDlg} />}
             </>
         </Panel>
     )
