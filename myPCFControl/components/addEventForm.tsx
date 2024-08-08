@@ -47,10 +47,10 @@ interface MyFormValues {
 interface AddEventFormProp {
     eventForm: LifeEventCategoryProp
     // typeOption: LifeEventCategoryProp[]
-    // setValid: (valid: boolean) => void
+    setValid: (valid: boolean) => void
     // showCategory: boolean
     // event: EventCategory
-    // formRef: React.MutableRefObject<FormikProps<{}>>
+    eventFormRef: React.MutableRefObject<FormikProps<{}>>
     
 }
 
@@ -89,13 +89,13 @@ export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
                 })} //event.validate
                 validateOnMount={true}
                 enableReinitialize={true}
-                // innerRef={props.formRef}
-                // onSubmit={() => {}}
-                onSubmit={(values, actions) => {
-                    console.log( values );
-                    actions.resetForm()
-                    actions.setSubmitting(true);
-                }}
+                innerRef={props.eventFormRef}
+                onSubmit={() => {}}
+                // onSubmit={(values, actions) => {
+                //     console.log( values );
+                //     actions.resetForm()
+                //     actions.setSubmitting(true);
+                // }}
             
                 component={({values, touched, errors, ...formprops}) => (
                     <Form>
@@ -144,8 +144,8 @@ export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
                                 />
                             </StackItem>
                         </Stack>
-                        {/* <FormikValidityObserver callback={props.setValid} /> */}
-                        <button type="submit">Submit</button>
+                        <FormikValidityObserver callback={props.setValid} />
+                        {/* <button type="submit">Submit</button> */}
                     </Form>
                 )}
             />

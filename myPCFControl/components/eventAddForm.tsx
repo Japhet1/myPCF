@@ -3,7 +3,9 @@ import { Dialog, DialogType, DialogFooter } from '@fluentui/react/lib/Dialog';
 import { PrimaryButton, DefaultButton, CommandBarButton } from '@fluentui/react/lib/Button';
 import { useId, useBoolean } from '@fluentui/react-hooks';
 import { AddEventForm } from './addEventForm';
-import { LifeEventCategoryProp } from '../Api/api';
+import { LifeEventCategoryProp, postData } from '../Api/api';
+import { FormikProps } from 'formik';
+import { IObjectHash } from 'pcf-core';
 
 
 export interface Item {
@@ -24,12 +26,21 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
     const subTextId: string = useId('subTextLabel');
     const [isValid, setIsValid] = React.useState(true)
 
+    const [ valid, setValid ] = React.useState(true)
+
     const dialogContentProps = {
         type: DialogType.normal,
         title: props.formData.text,
         // closeButtonAriaLabel: 'Close',
         // subText: 'Do you want to send this message without a subject?',
-      };
+    };
+
+    const evenFormRef = React.useRef<FormikProps<IObjectHash>>()
+
+    const callbackBtnSave = React.useCallback((valid: boolean) => {
+        setValid(valid)
+
+    }, [])
 
       
     const modalProps = React.useMemo(
@@ -45,6 +56,19 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
 
     console.log(props.formData)
 
+    const onBtnSave = async () => {
+        if(evenFormRef.current) {
+            const newEventSave = {
+                category: evenFormRef.current.values.category,
+                date: evenFormRef.current.values.date,
+                detail: evenFormRef.current.values.detail,
+                type: evenFormRef.current.values.type.text
+            }
+            await postData(newEventSave)
+            props.onFormCancel()
+        }
+    }
+
     return (
         <>
             <Dialog
@@ -55,10 +79,10 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
                 maxWidth={493}
                 minWidth={288}
             >
-                <AddEventForm eventForm={props.formData}/>
+                <AddEventForm eventFormRef={evenFormRef} eventForm={props.formData} setValid={callbackBtnSave}/>
                 
                 <DialogFooter>
-                    <PrimaryButton onClick={props.onFormCancel} text="Save" disabled={!isValid} />
+                    <PrimaryButton onClick={onBtnSave} text="Save" disabled={!valid} />
                     <DefaultButton onClick={props.onFormCancel} text="Cancel" />
                 </DialogFooter>
             </Dialog>

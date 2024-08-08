@@ -45,7 +45,7 @@ export const fetchData = async (): Promise<EventProp[]> => {
 export const postData = async (data: any) => {
     try {
         const response = await axios.post("http://localhost:3001/events/", data)
-        // console.log(response.data)
+        console.log(response.data)
         return response.data
         
     } catch (error) {

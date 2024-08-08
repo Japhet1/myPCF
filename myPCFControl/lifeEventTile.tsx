@@ -88,7 +88,7 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     </Stack>
                     <Stack>
                         <StackItem>
-                            <Text variant="smallPlus">{count.length} {count.length > 0 ? "events" : "event"}</Text>
+                            <Text variant="smallPlus">{count.length} {count.length > 1 ? "events" : "event"}</Text>
                         </StackItem>
                     </Stack>
                 </StackItem>
