@@ -154,6 +154,13 @@
       "date": "2024-08-14T00:00:00.000Z",
       "detail": "another",
       "type": "Doctorate degree"
+    },
+    {
+      "id": "0da2",
+      "category": "Employment",
+      "date": "2024-09-09T00:00:00.000Z",
+      "detail": "report",
+      "type": "Retirement"
     }
   ]
 }

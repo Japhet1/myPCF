@@ -33,7 +33,7 @@ export const SummaryContact: React.FC = () => {
         {/* <GridCell md={3}>
           <ContactView contact={contact} />
         </GridCell> */}
-          <GridCell md={9}>
+          <GridCell md={12}>
             <LifeEvent />
           </GridCell>
       </GridRow>

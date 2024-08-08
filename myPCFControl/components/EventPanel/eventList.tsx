@@ -7,7 +7,25 @@ import { StackItem, Stack } from '@fluentui/react/lib/Stack'
 import { Text } from '@fluentui/react/lib/Text'
 import { EventProp } from '../../Api/api'
 import { Item } from '../../lifeEventTile'
+import { mergeStyleSets } from '@fluentui/react'
+import { format } from 'date-fns'
 
+
+
+const classNames = mergeStyleSets({
+    backColor: {
+        backgroundColor: "lightBlue",
+    },
+    header: {
+        fontWeight: "bold"
+    },
+    detail: {
+        color: "gray"
+    },
+    list: {
+        padding: 10
+    }
+})
 
 interface EventListProp {
     onhide: () => void
@@ -32,17 +50,18 @@ export const EventList: React.FC<EventListProp> = (props) => {
 
     const onRenderCell = (item: Item, index?: number) => {
         return (
-            <div>
-                <Stack>
+            <div >
+                <Stack className={classNames.list}>
                     <StackItem>
-                        <Text>{item.type}</Text>
+                        <Text className={classNames.header}>{item.type}</Text>
                     </StackItem>
                     <StackItem>
-                        <Text>{item.detail}</Text>
+                        <Text>{format(new Date(item.date), "MMMM d, yyyy")}</Text>
                     </StackItem>
                     <StackItem>
-                        <Text>{item.date}</Text>
+                        <Text className={classNames.detail}>{item.detail}</Text>
                     </StackItem>
+                    
 
                 </Stack>
             </div>
@@ -67,8 +86,14 @@ export const EventList: React.FC<EventListProp> = (props) => {
         onRenderFooterContent={footerContent}
         >
             <>
-            {props.listevent.length > 0 && <List items={props.listevent.reverse()} onRenderCell={onRenderCell} />}
-
+                {props.listevent.length > 0 ? 
+                    <List items={props.listevent.reverse()} onRenderCell={onRenderCell} />
+                    :
+                    <Stack verticalAlign='center' tokens={{childrenGap: 15}}>
+                        <StackItem><Text>Add life event to this category</Text></StackItem>
+                        <Stack>{footerContent()}</Stack>
+                    </Stack>
+                }
             </>
         </Panel>
     )
