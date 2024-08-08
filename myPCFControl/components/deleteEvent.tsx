@@ -23,6 +23,8 @@ export const DeleteEvent: React.FC<DeleteEventProp> = (props) => {
     const onEventDelete = async () => {
         if(props.eventid) {
             await deleteData(props.eventid)
+
+            props.eventcancel()
         }
     }
 

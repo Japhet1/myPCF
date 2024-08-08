@@ -107,13 +107,6 @@
       "type": "Bachelor degree"
     },
     {
-      "id": "f31d",
-      "category": "Employment",
-      "date": "2024-08-20T00:00:00.000Z",
-      "detail": "sample",
-      "type": "Job ended"
-    },
-    {
       "id": "52cc",
       "category": "Education",
       "date": "2024-08-20T00:00:00.000Z",
@@ -147,13 +140,6 @@
       "date": "2024-09-09T00:00:00.000Z",
       "detail": "report",
       "type": "Retirement"
-    },
-    {
-      "id": "709c",
-      "category": "Health",
-      "date": "2024-08-20T00:00:00.000Z",
-      "detail": "test",
-      "type": "Hospital/Facility stay"
     }
   ]
 }
