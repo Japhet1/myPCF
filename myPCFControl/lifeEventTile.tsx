@@ -112,7 +112,7 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                 )  
             }
                 {formDlg && <EventAddForm onFormCancel={hideFormDlg} formData={formDataEvent.current} />}
-                {panelDlg && <EventList onhide={hidePanelDlg}/>}
+                {panelDlg && <EventList onhide={hidePanelDlg} panelData={formDataEvent.current}/>}
                 
             </PanelContent>
         </Panel>

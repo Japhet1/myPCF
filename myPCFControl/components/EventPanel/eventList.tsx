@@ -1,10 +1,11 @@
 import { Panel, PanelType } from '@fluentui/react/lib/Panel'
-// import { Panel } from 'pcf-components/lib/Panel'
 import * as React from 'react'
+import { LifeEventCategoryProp } from '../../Api/api'
 
 
 interface EventListProp {
     onhide: () => void
+    panelData: LifeEventCategoryProp
 }
 
 
@@ -18,7 +19,7 @@ export const EventList: React.FC<EventListProp> = (props) => {
         type={PanelType.smallFixedFar}
         closeButtonAriaLabel="Close"
         isFooterAtBottom={true}
-        // headerText={props.header}
+        headerText={props.panelData.text}
         // styles={props.events.length > 0 ? panelStyle : emptyPanel}
         // onRenderFooterContent={onRenderFooterContent}
         >
