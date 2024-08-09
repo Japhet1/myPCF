@@ -35,7 +35,7 @@ export const EditEvent: React.FC<EditEventProp> = (props) => {
                 category: editFormRef.current.values.category,
                 date: editFormRef.current.values.date,
                 detail: editFormRef.current.values.detail,
-                type: editFormRef.current.values.type
+                type: editFormRef.current.values.type.text
             }
             await editData(newEditSave)
             props.oneditcancel()

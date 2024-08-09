@@ -50,7 +50,9 @@ export const EditEventForm: React.FC<EditEventFormProp> = (props) => {
                 initialValues={setEditEventForm} //event.writableFields
                 validationSchema={Yup.object().shape({
                     category: Yup.string().required('Required').nullable(),
-                    type: Yup.string().required('Required').nullable(),
+                    type: Yup.object({
+                        text: Yup.string().required('required')
+                    }).required('Required').nullable(),
                     detail: Yup.string(),
                     date: Yup.string().required('Required'),
                 })} //event.validate

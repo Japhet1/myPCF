@@ -118,21 +118,7 @@
       "category": "Employment",
       "date": "2024-08-10T00:00:00.000Z",
       "detail": "sample testing",
-      "type": "Business started"
-    },
-    {
-      "id": "446c",
-      "category": "Education",
-      "date": "2024-08-04T00:00:00.000Z",
-      "detail": "learning",
-      "type": "High school"
-    },
-    {
-      "id": "522c",
-      "category": "Education",
-      "date": "2024-08-14T00:00:00.000Z",
-      "detail": "another",
-      "type": "Doctorate degree"
+      "type": "Job ended"
     },
     {
       "id": "0da2",
@@ -153,27 +139,20 @@
       "category": "Health",
       "date": "2024-08-05T00:00:00.000Z",
       "detail": "operation room",
-      "type": "Serious illness"
+      "type": "Hospital/Facility stay"
     },
     {
       "id": "4f0d",
       "category": "Health",
       "date": "2024-07-29T00:00:00.000Z",
       "detail": "bed",
-      "type": "Hospital/Facility stay"
-    },
-    {
-      "id": "9c5d",
-      "category": "Employment",
-      "date": "2024-08-06T00:00:00.000Z",
-      "detail": "entries",
-      "type": "Business closed"
+      "type": "Serious illness"
     },
     {
       "id": "cfa6",
       "category": "Education",
       "date": "2024-08-28T00:00:00.000Z",
-      "detail": "level 1",
+      "detail": "level 2",
       "type": "Associate degree"
     }
   ]
