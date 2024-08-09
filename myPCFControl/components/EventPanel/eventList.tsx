@@ -10,11 +10,12 @@ import { Item } from '../../lifeEventTile'
 import { mergeStyleSets } from '@fluentui/react'
 import { format } from 'date-fns'
 import { ConfirmDialog, useBoolean } from 'pcf-components'
+import {  ContextMenuRenderer, IContexMenuCommandExecuteParameters } from 'pcf-components/lib/fieldrenderers'
 // import { MoreVertical} from '@fluentui/react/lib/Icon'
 import { IconButton } from '@fluentui/react/lib/Button';
 import { ContextualMenu } from '@fluentui/react/lib/ContextualMenu'
 import { DeleteEvent } from '../deleteEvent'
-import { EditEvent } from '../EditEvent/editEvent'
+import { EditEvent } from '../EditEvent/editEventDialog'
 
 
 
@@ -47,32 +48,46 @@ export const EventList: React.FC<EventListProp> = (props) => {
     const [deleteDlg, {setTrue: showDeleteDlg, setFalse: hideDeleteDlg}] = useBoolean(false)
     const [editDlg, {setTrue: showEditDlg, setFalse: hideEditDlg}] = useBoolean(false)
 
-
+    const [editItem, setEditItem] = React.useState<Item>()
     const [itemId, setItemId] = React.useState('')
     // const itemId = React.useRef<string>('')
 
     const [menuVisible, setMenuVisible] = React.useState(false);
     const [target, setTarget] = React.useState(null);
   
-    const menuItems = [
+    const menuItems = React.useMemo(() =>[
       {
         key: 'edit',
         text: 'Edit',
         iconProps: { iconName: 'Edit' },
-        onClick: () => showEditDlg()
+        // onClick: () => showEditDlg()
       },
       {
         key: 'delete',
         text: 'Delete',
         iconProps: { iconName: 'Delete' },
-        onClick: () => showDeleteDlg()
+        // onClick: () => showDeleteDlg()
       }
-    ];
+    ], [])
   
     const onClick = (event) => {
       setTarget(event.currentTarget);
       setMenuVisible(!menuVisible);
       
+    };
+
+    const onContextMenuItemExecute = (event: IContexMenuCommandExecuteParameters<Item>) => {
+        // selectedItem.current = event.item;
+        setItemId(event.item.id)
+        setEditItem(event.item)
+        switch (event.key) {
+            case 'edit':
+                showEditDlg();
+                break;
+            case 'delete':
+                showDeleteDlg()
+                break;
+        }
     };
 
 
@@ -85,15 +100,17 @@ export const EventList: React.FC<EventListProp> = (props) => {
 
     // console.log(props.listevent.reverse())
     // console.log(itemId)
+    // console.log(editItem)
 
     const onRenderCell = (item: Item, index?: number) => {
-        setItemId(item.id)
+        // setItemId(item.id)
+        // setEditItem(item)
         // itemId.current = item.id
-        console.log(item.id)
+        // console.log(item.id)
         return (
             <div key={item.id}>
                 <Stack horizontal horizontalAlign='space-between' className={classNames.list}>
-                    <Stack >
+                    <Stack>
                         <StackItem>
                             <Text className={classNames.header}>{item.type}</Text>
                         </StackItem>
@@ -105,25 +122,19 @@ export const EventList: React.FC<EventListProp> = (props) => {
                         </StackItem>
                     </Stack>
                     <StackItem>
-                        {/* <IconButton iconProps={{iconName: 'MoreVertical'}} onClick={showDeleteDlg}/> */}
-                        {/* {deleteDlg && <DeleteEvent eventcancel={hideDeleteDlg} eventid={itemId}/>} */}
-                        <IconButton
+                        {/* <IconButton
                             iconProps={{ iconName: 'MoreVertical' }}
-                            onClick={onClick}
-                            
-                        />
-                        
-                        
+                            onClick={onClick}  
+                        /> */}
+                        <ContextMenuRenderer className='MoreVertical' menuItems={menuItems} onExecute={onContextMenuItemExecute} item={item} key={item?.id}  /> 
                     </StackItem>
-                    
                 </Stack>
-            
             </div>
         )
     }
     
 
-    console.log(props.listevent)
+    // console.log(props.listevent)
 
     return(
         <Panel
@@ -145,7 +156,7 @@ export const EventList: React.FC<EventListProp> = (props) => {
                     </Stack>
                 }
                 {deleteDlg && <DeleteEvent eventcancel={hideDeleteDlg} eventid={itemId} />}
-                {editDlg && <EditEvent oneditcancel={hideEditDlg} />}
+                {editDlg && <EditEvent oneditcancel={hideEditDlg} editData={props.panelData} editItem={editItem} />}
                 {menuVisible && (
                     <ContextualMenu
                         items={menuItems}

@@ -1,48 +1,36 @@
 import * as React from "react"
-import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from 'formik';
+import { Formik, FormikProps, Form } from 'formik';
 import { IStackTokens, Stack, StackItem } from "@fluentui/react/lib/Stack";
-import { mergeStyleSets, values } from "@fluentui/react";
-import { Dropdown, IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
-import { TextField, ITextFieldStyles } from "@fluentui/react/lib/TextField";
-import { DatePicker, DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
-// import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData";
+import { mergeStyleSets } from "@fluentui/react";
+import { IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
+import { ITextFieldStyles } from "@fluentui/react/lib/TextField";
+import { DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
 import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
-// import { EventCategory } from "./model";
 import * as Yup from "yup"
-// import { postData, LifeEventCategoryProp } from "./Api/api";
 import { IObjectHash } from "pcf-core";
-import { Item } from "./eventAddDialog";
 import { LifeEventCategoryProp } from "../../Api/api";
-import { text } from "node:stream/consumers";
   
-const stackgap = { childrenGap: 20 }
 const stackGap: IStackTokens = { childrenGap: 20 }
-
-const classNames = mergeStyleSets({
-    container: {
-        width: '100%'
-    }
-})
 
 const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 418 } };
 const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 418 } };
 
-const days: IDropdownOption[] = [
-    { text: 'Sunday', key: DayOfWeek.Sunday },
-    { text: 'Monday', key: DayOfWeek.Monday },
-    { text: 'Tuesday', key: DayOfWeek.Tuesday },
-    { text: 'Wednesday', key: DayOfWeek.Wednesday },
-    { text: 'Thursday', key: DayOfWeek.Thursday },
-    { text: 'Friday', key: DayOfWeek.Friday },
-    { text: 'Saturday', key: DayOfWeek.Saturday },
-]
+// const days: IDropdownOption[] = [
+//     { text: 'Sunday', key: DayOfWeek.Sunday },
+//     { text: 'Monday', key: DayOfWeek.Monday },
+//     { text: 'Tuesday', key: DayOfWeek.Tuesday },
+//     { text: 'Wednesday', key: DayOfWeek.Wednesday },
+//     { text: 'Thursday', key: DayOfWeek.Thursday },
+//     { text: 'Friday', key: DayOfWeek.Friday },
+//     { text: 'Saturday', key: DayOfWeek.Saturday },
+// ]
 
-interface MyFormValues {
-    category: {key: string, text: string, type: {key: string, text: string}[]},
-    type: {key: string, text: string},
-    detail: string,
-    date: string
-}
+// interface MyFormValues {
+//     category: {key: string, text: string, type: {key: string, text: string}[]},
+//     type: {key: string, text: string},
+//     detail: string,
+//     date: string
+// }
 
 interface AddEventFormProp {
     eventForm: LifeEventCategoryProp
@@ -75,7 +63,6 @@ export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
 
 
     return (
-        // <h1>hi</h1>
         <div>
             <Formik
                 initialValues={setEventForm} //event.writableFields

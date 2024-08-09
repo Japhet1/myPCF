@@ -102,8 +102,8 @@
     {
       "id": "bdb2",
       "category": "Education",
-      "date": "2024-08-28T00:00:00.000Z",
-      "detail": "testing",
+      "date": "2024-08-30T00:00:00.000Z",
+      "detail": "testing edit save action",
       "type": "Bachelor degree"
     },
     {
@@ -117,7 +117,7 @@
       "id": "5972",
       "category": "Employment",
       "date": "2024-08-10T00:00:00.000Z",
-      "detail": "sample",
+      "detail": "sample testing",
       "type": "Business started"
     },
     {
@@ -137,15 +137,15 @@
     {
       "id": "0da2",
       "category": "Employment",
-      "date": "2024-09-09T00:00:00.000Z",
-      "detail": "report",
+      "date": "2024-09-17T00:00:00.000Z",
+      "detail": "annual report",
       "type": "Retirement"
     },
     {
       "id": "e7ee",
       "category": "Health",
       "date": "2024-08-01T00:00:00.000Z",
-      "detail": "treatment",
+      "detail": "treatment codes",
       "type": "Procedure"
     },
     {

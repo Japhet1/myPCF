@@ -53,6 +53,15 @@ export const postData = async (data: any) => {
     }
 }
 
+export const editData = async (data: any) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/events/${data.id}`, data)
+        console.log(response.data)
+        return response.data
+    } catch (error) {
+        console.error("Error deleting:", error)
+    }
+}
 
 export const deleteData = async (id: string) => {
     try {
