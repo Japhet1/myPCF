@@ -140,6 +140,34 @@
       "date": "2024-09-09T00:00:00.000Z",
       "detail": "report",
       "type": "Retirement"
+    },
+    {
+      "id": "e7ee",
+      "category": "Health",
+      "date": "2024-08-01T00:00:00.000Z",
+      "detail": "treatment",
+      "type": "Procedure"
+    },
+    {
+      "id": "fc76",
+      "category": "Health",
+      "date": "2024-08-05T00:00:00.000Z",
+      "detail": "operation",
+      "type": "Serious illness"
+    },
+    {
+      "id": "4f0d",
+      "category": "Health",
+      "date": "2024-07-29T00:00:00.000Z",
+      "detail": "bed",
+      "type": "Hospital/Facility stay"
+    },
+    {
+      "id": "57cf",
+      "category": "Employment",
+      "date": "2024-08-05T00:00:00.000Z",
+      "detail": "employee",
+      "type": "Business started"
     }
   ]
 }

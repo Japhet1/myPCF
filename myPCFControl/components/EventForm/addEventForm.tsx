@@ -11,7 +11,7 @@ import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } fro
 import * as Yup from "yup"
 // import { postData, LifeEventCategoryProp } from "./Api/api";
 import { IObjectHash } from "pcf-core";
-import { Item } from "./eventAddForm";
+import { Item } from "./eventAddDialog";
 import { LifeEventCategoryProp } from "../../Api/api";
 import { text } from "node:stream/consumers";
   

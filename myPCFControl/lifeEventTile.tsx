@@ -7,7 +7,7 @@ import { mergeStyleSets, Text } from "@fluentui/react"
 import { fetchData, EventProp, LifeEventCategoryProp } from "./Api/api"
 import { formatDistance, subDays } from "date-fns";
 import { useBoolean } from "pcf-components"
-import { EventAddForm } from "./components/EventForm/eventAddForm"
+import { EventAddForm } from "./components/EventForm/eventAddDialog"
 import { EventList } from "./components/EventPanel/eventList"
 
 const stackGap = { childrenGap: 12}
@@ -56,6 +56,11 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
     const [panelDlg, {setTrue: showPanelDlg, setFalse: hidePanelDlg}] = useBoolean(false)
 
     const formDataEvent = React.useRef<LifeEventCategoryProp>()
+
+    const onAdd = React.useCallback((event?: React.MouseEvent<HTMLAnchorElement>) => {
+        event!.stopPropagation()
+        showFormDlg()
+    }, []);
 
     // console.log(props.category.text)
 
@@ -111,7 +116,7 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
                     </StackItem>
                 </Stack> )
                 :   (
-                    <ActionButton iconProps={{iconName: 'Add'}} onClick={showFormDlg}>Add event</ActionButton>
+                    <ActionButton iconProps={{iconName: 'Add'}} onClick={onAdd}>Add event</ActionButton>
                     
                 )  
             }

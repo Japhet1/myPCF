@@ -14,6 +14,7 @@ import { ConfirmDialog, useBoolean } from 'pcf-components'
 import { IconButton } from '@fluentui/react/lib/Button';
 import { ContextualMenu } from '@fluentui/react/lib/ContextualMenu'
 import { DeleteEvent } from '../deleteEvent'
+import { EditEvent } from '../EditEvent/editEvent'
 
 
 
@@ -44,6 +45,9 @@ interface EventListProp {
 export const EventList: React.FC<EventListProp> = (props) => {
 
     const [deleteDlg, {setTrue: showDeleteDlg, setFalse: hideDeleteDlg}] = useBoolean(false)
+    const [editDlg, {setTrue: showEditDlg, setFalse: hideEditDlg}] = useBoolean(false)
+
+
     const [itemId, setItemId] = React.useState('')
     // const itemId = React.useRef<string>('')
 
@@ -55,7 +59,7 @@ export const EventList: React.FC<EventListProp> = (props) => {
         key: 'edit',
         text: 'Edit',
         iconProps: { iconName: 'Edit' },
-        onClick: () => console.log('Edit action')
+        onClick: () => showEditDlg()
       },
       {
         key: 'delete',
@@ -141,13 +145,14 @@ export const EventList: React.FC<EventListProp> = (props) => {
                     </Stack>
                 }
                 {deleteDlg && <DeleteEvent eventcancel={hideDeleteDlg} eventid={itemId} />}
+                {editDlg && <EditEvent oneditcancel={hideEditDlg} />}
                 {menuVisible && (
                     <ContextualMenu
                         items={menuItems}
                         target={target}
                         onDismiss={() => setMenuVisible(false)}
-                        />
-                    )}
+                    />
+                )}
             </>
         </Panel>
     )
