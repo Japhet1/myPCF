@@ -42,7 +42,7 @@ export const EditEventForm: React.FC<EditEventFormProp> = (props) => {
         date: props.edititem.date
     }
 
-    console.log(props.editformdata)
+    // console.log(props.editformdata)
 
     return (
         <>

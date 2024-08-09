@@ -132,8 +132,6 @@ export const EventList: React.FC<EventListProp> = (props) => {
             </div>
         )
     }
-    
-
     // console.log(props.listevent)
 
     return(

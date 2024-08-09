@@ -152,7 +152,7 @@
       "id": "fc76",
       "category": "Health",
       "date": "2024-08-05T00:00:00.000Z",
-      "detail": "operation",
+      "detail": "operation room",
       "type": "Serious illness"
     },
     {
@@ -163,11 +163,18 @@
       "type": "Hospital/Facility stay"
     },
     {
-      "id": "57cf",
+      "id": "9c5d",
       "category": "Employment",
-      "date": "2024-08-05T00:00:00.000Z",
-      "detail": "employee",
-      "type": "Business started"
+      "date": "2024-08-06T00:00:00.000Z",
+      "detail": "entries",
+      "type": "Business closed"
+    },
+    {
+      "id": "cfa6",
+      "category": "Education",
+      "date": "2024-08-28T00:00:00.000Z",
+      "detail": "level 1",
+      "type": "Associate degree"
     }
   ]
 }

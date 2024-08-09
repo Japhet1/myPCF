@@ -53,7 +53,7 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
     //     }),
     //   );
 
-    console.log(props.formData)
+    // console.log(props.formData)
 
     const onBtnSave = async () => {
         if(evenFormRef.current) {
