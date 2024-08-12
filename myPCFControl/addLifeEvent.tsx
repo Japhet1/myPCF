@@ -13,7 +13,8 @@ import { FormikHelpers, FormikProps } from 'formik';
 import { IChoice, IObjectHash } from 'pcf-core';
 import { useAsync } from 'pcf-components/lib/hooks';
 import { postData, LifeEventCategoryProp } from './Api/api';
-import { AppContext } from './Context/eventContext';
+import { addEvent, AppContext } from './Context/eventContext';
+import { eventUseContext } from './Context/eventUseContext';
 
 
 
@@ -58,7 +59,7 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
 
   const formRef = React.useRef<FormikProps<IObjectHash>>()
 
-  const { dispatch  } = React.useContext(AppContext)
+  const { dispatch  } = eventUseContext()
 
 
   // console.log(lifeEvent.current)
@@ -103,12 +104,13 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
                 detail: formRef.current.values.detail,
                 type: formRef.current.values.type.text
           };
-          const data =  await postData(newData)
-          dispatch({type: 'ADD_DATA', payload: data})
+          dispatch(addEvent(newData))
+          await postData(newData)
+          
 
-            props.oncancel()
+          props.oncancel()
             
-          console.log(newData)
+          // console.log(newData)
         }
   }
 

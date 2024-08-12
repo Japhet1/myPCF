@@ -6,6 +6,8 @@ import { editData, LifeEventCategoryProp } from '../../Api/api'
 import { Item } from '../../lifeEventTile'
 import { FormikProps } from 'formik';
 import { IObjectHash } from 'pcf-core';
+import { editEvent } from '../../Context/eventContext'
+import { eventUseContext } from '../../Context/eventUseContext'
 
 
 export interface EditEventProp {
@@ -25,6 +27,8 @@ export const EditEvent: React.FC<EditEventProp> = (props) => {
 
     }
 
+    const {dispatch} = eventUseContext()
+
     // console.log(props.editData)
     // editFormData={props.editData}
 
@@ -37,6 +41,7 @@ export const EditEvent: React.FC<EditEventProp> = (props) => {
                 detail: editFormRef.current.values.detail,
                 type: editFormRef.current.values.type.text
             }
+            dispatch(editEvent(newEditSave))
             await editData(newEditSave)
             props.oneditcancel()
         }

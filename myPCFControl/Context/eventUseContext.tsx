@@ -1,14 +1,14 @@
-// import * as React from 'react'
-// import { EventContextProvider } from './eventContext'
-// import { useContext } from 'react'
+import * as React from 'react'
+import { AppContext } from './eventContext'
+import { useContext } from 'react'
 
-// export const eventUseContext: React.FC = () => {
-//     const lifeEvent = useContext(EventContextProvider)
+export const eventUseContext = () => {
+    const lifeEvent = useContext(AppContext)
 
-//     if(lifeEvent === undefined) {
-//         throw new Error ("eventUseContext mus be use with EventContextProvider")
-//     }
+    if(!lifeEvent) {
+        throw new Error ("eventUseContext mus be use with EventContextProvider")
+    }
 
-//     return lifeEvent
+    return lifeEvent
 
-// }
+}

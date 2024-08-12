@@ -2,6 +2,8 @@ import * as React from 'react'
 import { Dialog, DialogFooter, DialogType } from '@fluentui/react/lib/Dialog'
 import { PrimaryButton, DefaultButton } from '@fluentui/react/lib/Button'
 import { deleteData } from '../Api/api'
+import { deleteEvent } from '../Context/eventContext'
+import { eventUseContext } from '../Context/eventUseContext'
 
 
 
@@ -20,8 +22,11 @@ export const DeleteEvent: React.FC<DeleteEventProp> = (props) => {
         subText: 'Performing this action will delete the selected item',
     };
 
+    const {dispatch} = eventUseContext()
+
     const onEventDelete = async () => {
         if(props.eventid) {
+            dispatch(deleteEvent(props.eventid))
             await deleteData(props.eventid)
 
             props.eventcancel()

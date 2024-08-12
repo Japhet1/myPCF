@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext } from "react";
-// import { EventContextProvider, EventContext } from "../Context/eventContext"
+import { AppProvider, AppContext } from "../Context/eventContext"
+import { eventUseContext } from "../Context/eventUseContext";
 // import { LifeEventCategoryProp } from "../DummyData/categoryData";
 
 export interface LifeEventCategoryProp {
@@ -17,8 +18,6 @@ export interface EventProp {
     detail: string,
     date: string,
 }
-
-// const { state, dispatch } = useContext(EventContext)
 
 export const fetchCategory = async (): Promise<LifeEventCategoryProp[]> => {
     try {

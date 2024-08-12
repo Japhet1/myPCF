@@ -13,6 +13,7 @@ import { LifeEventCategoryProp } from "./Api/api"
 import { AppProvider, AppContext } from "./Context/eventContext"
 import { text } from "stream/consumers"
 import { useBoolean } from "pcf-components"
+import { eventUseContext } from "./Context/eventUseContext"
 
 
 
@@ -44,7 +45,8 @@ export interface LifeEventProp {
 
 export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
-    const { state, dispatch  } = React.useContext(AppContext)
+    // const { state, dispatch  } = React.useContext(AppContext)
+    const { state, dispatch  } = eventUseContext()
 
     const [lifeEventCategory, setLifeEventCategory] = React.useState<LifeEventCategoryProp[]>([])
     // const lifeEventCategory = React.useRef<LifeEventCategoryProp[]>(LifeEventCategoryData)
@@ -81,47 +83,20 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
     React.useEffect(() => {
         const getData = async () => {
             const categories = await fetchCategory();
-            setLifeEventCategory(categories)
+            // setLifeEventCategory(categories)
             const events = await fetchData();
             setItem(events)
-            // console.log(categories)
-            // console.log(events)
-            // dispatch({ type: 'SET_CATEGORY', payload: categories });
+            // console.log("Category:", categories)
+            // console.log("Events:", events)
+            // console.error(dispatch({ type: 'SET_CATEGORY', payload: categories }));
             // dispatch({ type: 'SET_EVENTS', payload: events });
         };
       
         getData();
-        // const eventCategory = async () => {
-        //     const data: LifeEventCategoryProp[] = await fetchCategory()
-        //     setLifeEventCategory(data)
-        //     dispatch({type: 'SET_DATA', payload: data})
-        //     console.log(data)
-        // }
-        // const eventData = async () => {
-        //     const data: EventProp[] = await fetchData()
-        //     setItem(data)
-        //     // dispatch({type: 'SET_DATA', payload: data})
-        //     // item.current = data        
-        // }
-        // eventCategory()
-        // eventData()
-
-        // const initializeData = async () => {
-        //     try {
-        //         const cat = await fetchCategories();
-        //         const evt = await fetchEvents();
-        //         console.log(cat)
-        //         console.log(evt)
-        //     } catch (err) {
-        //         console.error("Error initializing data:", err);
-        //     }
-        // };
-
-        // initializeData();
-    },[dispatch])
+    },[])
 
     const getEvents = (category: LifeEventCategoryProp) => {
-        return item.filter(e => e.category === category.text).map(e => ({
+        return state.events.filter(e => e.category === category.text).map(e => ({
             id: e.id,
             category: e.category,
             date: e.date,
@@ -130,35 +105,35 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
         }))
     }
 
-    
-
+    // console.log(dispatch)
+    // console.log(state)
     // console.log(item)
 
     return (
-        <AppProvider>
+        // <AppProvider>
             <Panel>
-            <PanelHeader>
-                <Stack horizontal horizontalAlign="space-between" className={classNames.container}>
-                    <StackItem grow={1}>
-                        <PanelHeaderTitle title="Life Event" />
-                    </StackItem>
-                    <StackItem>
-                        <CommandBarButton iconProps={addIcon} text='Add event' onClick={showDlg} className={classNames.cmdButton} />
-                        {/* <CommandBarButton iconProps={addIcon} text="Add event"  className={classNames.cmdButton} /> */}
-                        {/* <AddLifeEvent lifeEventCategory={lifeEventCategory}  /> */}
-                    </StackItem>
-                </Stack>
-            </PanelHeader>
-            <PanelContent>
-                <div className={classNames.tiles}>
-                    {lifeEventCategory.map((category) => (
-                        <LifeEventTile item={item} getevent={getEvents(category)} category={category} />
-                    ))}   
-                </div>
-                {openDlg && <AddLifeEvent oncancel={hideDlg} lifeEventCategory={lifeEventCategory}  />}
-            </PanelContent>
-        </Panel>
-        </AppProvider>
+                <PanelHeader>
+                    <Stack horizontal horizontalAlign="space-between" className={classNames.container}>
+                        <StackItem grow={1}>
+                            <PanelHeaderTitle title="Life Event" />
+                        </StackItem>
+                        <StackItem>
+                            <CommandBarButton iconProps={addIcon} text='Add event' onClick={showDlg} className={classNames.cmdButton} />
+                            {/* <CommandBarButton iconProps={addIcon} text="Add event"  className={classNames.cmdButton} /> */}
+                            {/* <AddLifeEvent lifeEventCategory={lifeEventCategory}  /> */}
+                        </StackItem>
+                    </Stack>
+                </PanelHeader>
+                <PanelContent>
+                    <div className={classNames.tiles}>
+                        {state.category.map((category) => (
+                            <LifeEventTile item={state.events} getevent={getEvents(category)} category={category} />
+                        ))}   
+                    </div>
+                    {openDlg && <AddLifeEvent oncancel={hideDlg} lifeEventCategory={state.category}  />}
+                </PanelContent>
+            </Panel>
+        // </AppProvider>
 
     )
 }

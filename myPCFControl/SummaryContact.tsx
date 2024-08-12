@@ -5,6 +5,7 @@ import { Grid, GridCell, GridRow } from 'pcf-components/lib/grid';
 import { ContactView } from './ContactView';
 import { SummaryProp, SummaryData, getSummaryData } from './DummyData/summaryData'
 import { LifeEvent } from './lifeEvent';
+import { AppProvider } from './Context/eventContext';
 
 type HandleDataFromChild = (data: SummaryProp) => void;
 
@@ -28,7 +29,8 @@ export const SummaryContact: React.FC = () => {
   // })
 
   return(
-    <Grid>
+    <AppProvider>
+      <Grid>
       <GridRow rowGap colGap>
         {/* <GridCell md={3}>
           <ContactView contact={contact} />
@@ -43,6 +45,8 @@ export const SummaryContact: React.FC = () => {
         </GridCell>
       </GridRow> */}
     </Grid>
+    </AppProvider>
+    
 
     
   )

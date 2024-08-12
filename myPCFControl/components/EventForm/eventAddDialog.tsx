@@ -6,6 +6,8 @@ import { AddEventForm } from './addEventForm';
 import { LifeEventCategoryProp, postData } from '../../Api/api';
 import { FormikProps } from 'formik';
 import { IObjectHash } from 'pcf-core';
+import { eventUseContext } from '../../Context/eventUseContext';
+import { addEvent } from '../../Context/eventContext';
 
 
 export interface Item {
@@ -27,6 +29,8 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
     const [isValid, setIsValid] = React.useState(true)
 
     const [ valid, setValid ] = React.useState(true)
+
+    const {dispatch} = eventUseContext()
 
     const dialogContentProps = {
         type: DialogType.normal,
@@ -63,7 +67,9 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
                 detail: evenFormRef.current.values.detail,
                 type: evenFormRef.current.values.type.text
             }
+            dispatch(addEvent(newEventSave))
             await postData(newEventSave)
+
             props.onFormCancel()
         }
     }

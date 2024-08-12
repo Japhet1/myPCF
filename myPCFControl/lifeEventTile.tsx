@@ -9,6 +9,7 @@ import { formatDistance, subDays } from "date-fns";
 import { useBoolean } from "pcf-components"
 import { EventAddForm } from "./components/EventForm/eventAddDialog"
 import { EventList } from "./components/EventPanel/eventList"
+import { Event } from "./Context/eventContext"
 
 const stackGap = { childrenGap: 12}
 
@@ -32,7 +33,7 @@ export interface Item {
 export interface LifeEventTileProp {
     category: LifeEventCategoryProp,
     // event: any[]
-    item: EventProp[]
+    item: Event[]
     getevent: Item[]
 }
 
