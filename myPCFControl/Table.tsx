@@ -26,7 +26,7 @@ export const Table: React.FC<ChildProps> = ({ sendDataToParent }) => {
             minWidth: 100,
             maxWidth: 150,
             isResizable: true,
-            onRender:(item: any, index?: number, column?: IColumn) => {
+            onRender:(item: SummaryProp, index?: number, column?: IColumn) => {
                 return <span>{item.name}</span>
             }
         },
@@ -37,7 +37,7 @@ export const Table: React.FC<ChildProps> = ({ sendDataToParent }) => {
             minWidth: 100,
             maxWidth: 150,
             isResizable: true,
-            onRender:(item: any, index?: number, column?: IColumn) => {
+            onRender:(item: SummaryProp, index?: number, column?: IColumn) => {
                 return <span>{item.type}</span>
             }
         },
@@ -48,7 +48,7 @@ export const Table: React.FC<ChildProps> = ({ sendDataToParent }) => {
             minWidth: 100,
             maxWidth: 150,
             isResizable: true,
-            onRender:(item: any, index?: number, column?: IColumn) => {
+            onRender:(item: SummaryProp, index?: number, column?: IColumn) => {
                 return <span>{item.category}</span>
             }
         },
@@ -59,7 +59,7 @@ export const Table: React.FC<ChildProps> = ({ sendDataToParent }) => {
             minWidth: 100,
             maxWidth: 150,
             isResizable: true,
-            onRender:(item: any, index?: number, column?: IColumn) => {
+            onRender:(item: SummaryProp, index?: number, column?: IColumn) => {
                 return <span>{item.phone}</span>
             }
         },
@@ -70,7 +70,7 @@ export const Table: React.FC<ChildProps> = ({ sendDataToParent }) => {
             minWidth: 100,
             maxWidth: 150,
             isResizable: true,
-            onRender:(item: any, index?: number, column?: IColumn) => {
+            onRender:(item: SummaryProp, index?: number, column?: IColumn) => {
                 return <span>{item.email}</span>
             }
         },
@@ -81,12 +81,12 @@ export const Table: React.FC<ChildProps> = ({ sendDataToParent }) => {
             minWidth: 100,
             maxWidth: 150,
             isResizable: true,
-            onRender:(item: any, index?: number, column?: IColumn) => {
+            onRender:(item: SummaryProp, index?: number, column?: IColumn) => {
                 return <span>{item.branch}</span>
             }
         }
     ]
-    const _onActiveItemChanged = (item: any): void => {
+    const _onActiveItemChanged = (item: SummaryProp): void => {
         // console.log(`Item invoked: ${JSON.stringify(item)}`);
         sendDataToParent(item)
     };

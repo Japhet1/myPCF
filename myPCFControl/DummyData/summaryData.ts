@@ -19,7 +19,7 @@ export interface SummaryProp {
     yearofoperation: string,
     bank: string,
     bankbranch: string,
-    event?: {}
+    // event?: {}
 }
 
 export const SummaryData: SummaryProp[] = [
@@ -44,16 +44,16 @@ export const SummaryData: SummaryProp[] = [
         yearofoperation: "",
         bank: "UBA",
         bankbranch: "Madina",
-        event: {
-            // { key: "Education", value: ["Testing 1", "Testing 2", "Testing 3"]},
-            // { key: "Employment", value: ["Testing 1", "Testing 2", "Testing 3"]},
-            // { key: "Health", value: ["Testing 1", "Testing 2"]},
-            // { key: "Other", value: []}
-            Education: ["Testing 1", "Testing 2", "Testing 3"],
-            Employment: ["Testing 1", "Testing 2", "Testing 3"],
-            Health: ["Testing 1", "Testing 2"],
-            Other: []
-        }
+        // event: {
+        //     // { key: "Education", value: ["Testing 1", "Testing 2", "Testing 3"]},
+        //     // { key: "Employment", value: ["Testing 1", "Testing 2", "Testing 3"]},
+        //     // { key: "Health", value: ["Testing 1", "Testing 2"]},
+        //     // { key: "Other", value: []}
+        //     Education: ["Testing 1", "Testing 2", "Testing 3"],
+        //     Employment: ["Testing 1", "Testing 2", "Testing 3"],
+        //     Health: ["Testing 1", "Testing 2"],
+        //     Other: []
+        // }
     },
     {
         id: 2,

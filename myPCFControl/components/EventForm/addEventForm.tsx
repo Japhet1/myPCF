@@ -32,13 +32,15 @@ const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 418 } };
 //     date: string
 // }
 
+interface AddForm {}
+
 interface AddEventFormProp {
     eventForm: LifeEventCategoryProp
     // typeOption: LifeEventCategoryProp[]
     setValid: (valid: boolean) => void
     // showCategory: boolean
     // event: EventCategory
-    eventFormRef: React.MutableRefObject<FormikProps<{}>>
+    eventFormRef: React.MutableRefObject<FormikProps<AddForm>>
     
 }
 

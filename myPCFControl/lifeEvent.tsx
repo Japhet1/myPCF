@@ -7,7 +7,7 @@ import { SummaryProp } from "./DummyData/summaryData"
 import { AddLifeEvent } from "./addLifeEvent"
 import { mergeStyleSets } from "@fluentui/merge-styles"
 import { fetchData, EventProp, fetchCategory } from "./Api/api"
-import { IChoice } from "pcf-core"
+import { IChoice, Service } from "pcf-core"
 // import { EventContextProvider, EventContext } from "./Context/eventContext"
 import { LifeEventCategoryProp } from "./Api/api"
 import { AppProvider, AppContext } from "./Context/eventContext"
@@ -80,20 +80,20 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
     
     // console.log(state)
 
-    React.useEffect(() => {
-        const getData = async () => {
-            const categories = await fetchCategory();
-            // setLifeEventCategory(categories)
-            const events = await fetchData();
-            setItem(events)
-            // console.log("Category:", categories)
-            // console.log("Events:", events)
-            // console.error(dispatch({ type: 'SET_CATEGORY', payload: categories }));
-            // dispatch({ type: 'SET_EVENTS', payload: events });
-        };
+    // React.useEffect(() => {
+    //       const categories = await fetchCategory();
+    //         // setLifeEventCategory(categories)
+    //         const events = await fetchData();
+    //         // setItem(events)
+    //        const getData = async () => {
+    //        // console.log("Category:", categories)
+    //         // console.log("Events:", events)
+    //         // console.error(dispatch({ type: 'SET_CATEGORY', payload: categories }));
+    //         // dispatch({ type: 'SET_EVENTS', payload: events });
+    //     };
       
-        getData();
-    },[])
+    //     getData();
+    // },[])
 
     const getEvents = (category: LifeEventCategoryProp) => {
         return state.events.filter(e => e.category === category.text).map(e => ({
@@ -104,6 +104,8 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
             type: e.type
         }))
     }
+
+   
 
     // console.log(dispatch)
     // console.log(state)
@@ -127,7 +129,7 @@ export const LifeEvent: React.FC<LifeEventProp> = (props) => {
                 <PanelContent>
                     <div className={classNames.tiles}>
                         {state.category.map((category) => (
-                            <LifeEventTile item={state.events} getevent={getEvents(category)} category={category} />
+                            <LifeEventTile key={category.id} item={state.events} getevent={getEvents(category)} category={category} />
                         ))}   
                     </div>
                     {openDlg && <AddLifeEvent oncancel={hideDlg} lifeEventCategory={state.category}  />}

@@ -5,9 +5,8 @@ import { mergeStyleSets, values } from "@fluentui/react";
 import { Dropdown, IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
 import { TextField, ITextFieldStyles } from "@fluentui/react/lib/TextField";
 import { DatePicker, DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
-// import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData";
 import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
-import { EventCategory } from "./model";
+// import { EventCategory } from "./model";
 import * as Yup from "yup"
 import { postData, LifeEventCategoryProp } from "./Api/api";
 import { IObjectHash } from "pcf-core";
@@ -41,13 +40,18 @@ interface MyFormValues {
     date: string
 }
 
+interface CreateForm {}
+
+interface FormikValue {
+    category: LifeEventCategoryProp
+}
+
 interface CreateFormProp {
     typeOption: LifeEventCategoryProp[]
     setValid: (valid: boolean) => void
     showCategory: boolean
-    event: EventCategory
-    formRef: React.MutableRefObject<FormikProps<{}>>
-    
+    // event: EventCategory
+    formRef: React.MutableRefObject<FormikProps<CreateForm>>
 }
 // const newLead: Lead = new Lead
 
@@ -128,6 +132,8 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
     //     [],
     // )
 
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getOptions = React.useCallback((values: any): IDropdownOption<any>[] => {
         
         // if (values.category) {
@@ -179,7 +185,7 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                 innerRef={props.formRef}
                 onSubmit={() => {}}
                 // onSubmit={(values, actions) => {
-                //     // console.log( values );
+                //     console.log( values );
                 //     // selectedItem.current = values
                 //     // const newData = {
                 //     //     category: values.category.text,
@@ -204,6 +210,7 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                                         name="category"
                                         placeholder=""
                                         label="Select category"
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         options={optionCategory.current as IDropdownOption<any>[]}
                                         styles={dropdownStyles}  
                                     />
@@ -213,10 +220,11 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                                         name="type"
                                         placeholder=""
                                         label="Select event type"
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         options={getOptions(values)}
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         disabled={!(values as any).category}
                                         styles={dropdownStyles}
-
                                     />
                                 </StackItem>
                             </Stack>

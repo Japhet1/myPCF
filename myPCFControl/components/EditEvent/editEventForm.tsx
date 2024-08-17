@@ -25,10 +25,12 @@ const days: IDropdownOption[] = [
     { text: 'Saturday', key: DayOfWeek.Saturday },
 ]
 
+interface EditForm {}
+
 interface EditEventFormProp {
     editformdata: LifeEventCategoryProp,
     edititem: Item,
-    editformref: React.MutableRefObject<FormikProps<{}>>
+    editformref: React.MutableRefObject<FormikProps<EditForm>>
 }
 
 export const EditEventForm: React.FC<EditEventFormProp> = (props) => {

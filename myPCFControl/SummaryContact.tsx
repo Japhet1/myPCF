@@ -20,9 +20,9 @@ export const SummaryContact: React.FC = () => {
   // console.log(contact)
 
 
-  // const handleDataFromChild: HandleDataFromChild = (data) => {
-  //   setContact(data);
-  // };
+  const handleDataFromChild: HandleDataFromChild = (data) => {
+    setContact(data);
+  };
 
   // React.useEffect(() => {
 

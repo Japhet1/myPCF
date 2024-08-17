@@ -107,13 +107,6 @@
       "type": "Procedure"
     },
     {
-      "id": "ccac",
-      "category": "Education",
-      "date": "2024-08-07T00:00:00.000Z",
-      "detail": "sdfsdf",
-      "type": "Doctorate degree"
-    },
-    {
       "id": "7c26",
       "category": "Employment",
       "date": "2024-08-10T00:00:00.000Z",
@@ -137,9 +130,9 @@
     {
       "id": "5f16",
       "category": "Education",
-      "date": "2024-08-08T00:00:00.000Z",
-      "detail": "kmk",
-      "type": "High school"
+      "date": "2024-07-29T00:00:00.000Z",
+      "detail": "kmktrtr",
+      "type": "Doctorate degree"
     },
     {
       "id": "7c68",
@@ -149,18 +142,46 @@
       "type": "Retirement"
     },
     {
-      "id": "52de",
+      "id": "f96a",
+      "category": "Education",
+      "date": "2024-08-05T00:00:00.000Z",
+      "detail": "hghghrtjyg",
+      "type": "Master degree"
+    },
+    {
+      "id": "cd09",
+      "category": "Education",
+      "date": "2024-08-03T00:00:00.000Z",
+      "detail": "dasa",
+      "type": "High school"
+    },
+    {
+      "id": "27fd",
       "category": "Health",
-      "date": "2024-08-08T00:00:00.000Z",
-      "detail": "fgfgqwwqer",
+      "date": "2024-07-31T00:00:00.000Z",
+      "detail": "joio",
       "type": "Procedure"
     },
     {
-      "id": "f96a",
-      "category": "Education",
-      "date": "2024-08-15T00:00:00.000Z",
-      "detail": "hghg",
-      "type": "Bachelor degree"
+      "id": "9c8e",
+      "category": "Employment",
+      "date": "2024-08-22T00:00:00.000Z",
+      "detail": "rd",
+      "type": "Job started"
+    },
+    {
+      "id": "a1aa",
+      "category": "Health",
+      "date": "2024-08-08T00:00:00.000Z",
+      "detail": "fdhdfhd",
+      "type": "Hospital/Facility stay"
+    },
+    {
+      "id": "55fc",
+      "category": "Employment",
+      "date": "2024-08-07T00:00:00.000Z",
+      "detail": "eeery",
+      "type": "Retirement"
     }
   ]
 }

@@ -40,9 +40,21 @@ export class myPCFControl implements ComponentFramework.ReactControl<IInputs, IO
         context: ComponentFramework.Context<IInputs>,
         notifyOutputChanged: () => void,
         state: ComponentFramework.Dictionary
+        
     ): void {
         // this.notifyOutputChanged = notifyOutputChanged;
         Service.init(new ComponentContextService(context))
+
+        const fetch = Service.webApi.retrieveMultipleRecords("new_lifeevent", "?$select=new_category").then(
+            function success(results) {
+                console.log(results);
+            },
+            function(error) {
+                console.log(error.message);
+            }
+        );
+        console.log(fetch)
+
     }
 
     /**

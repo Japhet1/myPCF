@@ -4,15 +4,20 @@ import { AppProvider, AppContext } from "../Context/eventContext"
 import { eventUseContext } from "../Context/eventUseContext";
 // import { LifeEventCategoryProp } from "../DummyData/categoryData";
 
+interface Item {
+    key: string,
+    text: string,
+}
+
 export interface LifeEventCategoryProp {
     id: string
     key: string,
     text: string,
-    type: any[]
+    type: Item[]
 }
 
 export interface EventProp {
-    id: string,
+    id?: string,
     category: string,
     type: string,
     detail: string,
@@ -41,7 +46,7 @@ export const fetchData = async (): Promise<EventProp[]> => {
     }
 }
 
-export const postData = async (data: any) => {
+export const postData = async (data: EventProp) => {
     try {
         const response = await axios.post("http://localhost:3001/events/", data)
         console.log(response.data)
@@ -52,7 +57,7 @@ export const postData = async (data: any) => {
     }
 }
 
-export const editData = async (data: any) => {
+export const editData = async (data: EventProp) => {
     try {
         const response = await axios.put(`http://localhost:3001/events/${data.id}`, data)
         console.log(response.data)

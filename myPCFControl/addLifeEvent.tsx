@@ -8,7 +8,7 @@ import { useId, useBoolean } from '@fluentui/react-hooks';
 import { IIconProps, mergeStyleSets } from '@fluentui/react';
 import { CreateForm } from './createForm';
 // import { LifeEventCategoryProp } from './DummyData/categoryData';
-import { EventCategory } from './model';
+// import { EventCategory } from './model';
 import { FormikHelpers, FormikProps } from 'formik';
 import { IChoice, IObjectHash } from 'pcf-core';
 import { useAsync } from 'pcf-components/lib/hooks';
@@ -55,7 +55,7 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   const lifeEvent = React.useRef<LifeEventCategoryProp[]>()
 
   lifeEvent.current = props.lifeEventCategory
-  const initialEventValues = React.useRef<EventCategory>()
+  // const initialEventValues = React.useRef<EventCategory>()
 
   const formRef = React.useRef<FormikProps<IObjectHash>>()
 
@@ -131,7 +131,7 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
         maxWidth={493}
         minWidth={288}
       >
-        <CreateForm formRef={formRef} event={initialEventValues.current} typeOption={lifeEvent.current} setValid={callbackOnSave} showCategory={showCategory.current} />
+        <CreateForm formRef={formRef} typeOption={lifeEvent.current} setValid={callbackOnSave} showCategory={showCategory.current} />
         {/* <CreateForm event={lifeEvent.current} setValid={callbackOnSave} categoryOption={props.lifeEventCategory} /> */}
         <DialogFooter>
           <PrimaryButton onClick={onsave} text="Save" disabled={!isValid} />
