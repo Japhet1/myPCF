@@ -108,10 +108,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     React.useEffect(() => {
         const getData = async () => {
             try {
-                const categories = await axios.get<Category[]>("http://localhost:3001/category/")
-                const events = await axios.get<Event[]>("http://localhost:3001/events/")
-                dispatch(setCategory(categories.data));
-                dispatch(setEvents(events.data));
+                // const categories = await axios.get<Category[]>("http://localhost:3001/category/")
+                // const events = await axios.get<Event[]>("http://localhost:3001/events/")
+                // dispatch(setCategory(categories.data));
+                // dispatch(setEvents(events.data));
             } catch (error) {
                 console.error(error)
             }
