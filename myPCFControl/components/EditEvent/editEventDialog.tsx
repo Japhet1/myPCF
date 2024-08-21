@@ -8,12 +8,13 @@ import { FormikProps } from 'formik';
 import { IObjectHash } from 'pcf-core';
 import { editEvent } from '../../Context/eventContext'
 import { eventUseContext } from '../../Context/eventUseContext'
+import { Event } from '../../Context/eventContext'
 
 
 export interface EditEventProp {
     oneditcancel: () => void
-    editData: LifeEventCategoryProp
-    editItem: Item
+    // editData: LifeEventCategoryProp
+    editItem: Event
 }
 
 
@@ -23,7 +24,7 @@ export const EditEvent: React.FC<EditEventProp> = (props) => {
 
     const dialogContentProps = {
         type: DialogType.normal,
-        title: props.editData.text,
+        // title: props.editData.text,
 
     }
 
@@ -35,14 +36,14 @@ export const EditEvent: React.FC<EditEventProp> = (props) => {
     const onEditSave = async () => {
         if(editFormRef.current) {
             const newEditSave = {
-                id: editFormRef.current.values.id,
-                category: editFormRef.current.values.category,
-                date: editFormRef.current.values.date,
-                detail: editFormRef.current.values.detail,
-                type: editFormRef.current.values.type.text
+                Id: editFormRef.current.values.id,
+                new_category: editFormRef.current.values.category,
+                new_date: editFormRef.current.values.date,
+                new_detail: editFormRef.current.values.detail,
+                new_eventtype: editFormRef.current.values.type.text
             }
-            dispatch(editEvent(newEditSave))
-            await editData(newEditSave)
+            // dispatch(editEvent(newEditSave))
+            // await editData(newEditSave)
             props.oneditcancel()
         }
     }
@@ -60,7 +61,7 @@ export const EditEvent: React.FC<EditEventProp> = (props) => {
                 maxWidth={493}
                 minWidth={288}
             >
-                <EditEventForm editformref={editFormRef} editformdata={props.editData} edititem={props.editItem}/>
+                <EditEventForm editformref={editFormRef}  edititem={props.editItem}/>
                 <DialogFooter>
                     <PrimaryButton onClick={onEditSave} text='Save'/>
                     <DefaultButton onClick={props.oneditcancel} text='Cancel' />

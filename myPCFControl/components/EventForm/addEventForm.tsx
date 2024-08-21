@@ -1,41 +1,24 @@
 import * as React from "react"
 import { Formik, FormikProps, Form } from 'formik';
 import { IStackTokens, Stack, StackItem } from "@fluentui/react/lib/Stack";
-import { mergeStyleSets } from "@fluentui/react";
 import { IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
 import { ITextFieldStyles } from "@fluentui/react/lib/TextField";
 import { DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
 import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
 import * as Yup from "yup"
-import { IObjectHash } from "pcf-core";
-import { LifeEventCategoryProp } from "../../Api/api";
+import { IChoice, getOptionSet } from "pcf-core";
+import { EventTable } from "../../model"
   
 const stackGap: IStackTokens = { childrenGap: 20 }
 
 const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 418 } };
 const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 418 } };
 
-// const days: IDropdownOption[] = [
-//     { text: 'Sunday', key: DayOfWeek.Sunday },
-//     { text: 'Monday', key: DayOfWeek.Monday },
-//     { text: 'Tuesday', key: DayOfWeek.Tuesday },
-//     { text: 'Wednesday', key: DayOfWeek.Wednesday },
-//     { text: 'Thursday', key: DayOfWeek.Thursday },
-//     { text: 'Friday', key: DayOfWeek.Friday },
-//     { text: 'Saturday', key: DayOfWeek.Saturday },
-// ]
-
-// interface MyFormValues {
-//     category: {key: string, text: string, type: {key: string, text: string}[]},
-//     type: {key: string, text: string},
-//     detail: string,
-//     date: string
-// }
 
 interface AddForm {}
 
 interface AddEventFormProp {
-    eventForm: LifeEventCategoryProp
+    eventForm: IChoice
     // typeOption: LifeEventCategoryProp[]
     setValid: (valid: boolean) => void
     // showCategory: boolean
@@ -46,81 +29,94 @@ interface AddEventFormProp {
 
 export const AddEventForm: React.FC<AddEventFormProp> = (props) => {
     const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
-    const [firstTextFieldValue, setFirstTextFieldValue] = React.useState('');
-    const [secondTextFieldValue, setSecondTextFieldValue] = React.useState('');
 
-    const [selectedItem, setSelectedItem] = React.useState<IObjectHash>();
+    const table = new EventTable()
+    const typeOptionSet = React.useRef<IChoice[]>([])
 
-    const newData = [{
-        key: props.eventForm.key,
-        text: props.eventForm.text
-    }];
+
+    console.log(props.eventForm)
 
     const setEventForm = {
-        category: props.eventForm.text,
-        type: '',
-        detail: '',
-        date: ''
+        new_category: props.eventForm,
+        new_eventtype: '',
+        new_detail: '',
+        new_date: ''
     }
 
+    React.useEffect(() => {
+        const fn = async () => {
+            const types = await getOptionSet(table.LogicalName, 'new_eventtype');
+            typeOptionSet.current = types;
+            console.log(typeOptionSet.current)
+        };
+        fn();
+    }, []);
+
+    const getOptions = React.useCallback((values) => {
+        if (values.new_category) {
+            const v = values.new_category.key.toString();
+            console.log(v)
+            return typeOptionSet.current.filter((e) => e.key.toString().startsWith(v) || e.key == 1) as IDropdownOption<any>[];
+        }
+        return [];
+        
+    }, [])
 
     return (
         <div>
             <Formik
                 initialValues={setEventForm} //event.writableFields
                 validationSchema={Yup.object().shape({
-                    category: Yup.string().required('Required').nullable(),
-                    type: Yup.object({
-                        key: Yup.number().required('Required')
-                    }).required('Required').nullable(),
-                    detail: Yup.string(),
-                    date: Yup.string().required('Required'),
+                    new_category: Yup.object(),
+                    new_eventtype: Yup.object({
+                        key: Yup.number()
+                    }),
+                    new_date: Yup.string(),
                 })} //event.validate
                 validateOnMount={true}
                 enableReinitialize={true}
                 innerRef={props.eventFormRef}
-                onSubmit={() => {}}
-                // onSubmit={(values, actions) => {
-                //     console.log( values );
-                //     actions.resetForm()
-                //     actions.setSubmitting(true);
-                // }}
+                // onSubmit={() => {}}
+                onSubmit={(values, actions) => {
+                    console.log( values );
+                    actions.resetForm()
+                    actions.setSubmitting(true);
+                }}
             
                 component={({values, touched, errors, ...formprops}) => (
                     <Form>
                         <Stack tokens={stackGap}>
                             <Stack>
-                                {/* <StackItem>
-                                    <FieldDropdown
+                                <StackItem>
+                                    {/* <FieldDropdown
                                         name="category"
                                         placeholder=""
                                         label="Select category"
-                                        options={newData}
+                                        options={props.eventForm} 
                                         styles={dropdownStyles}  
-                                    />
-                                </StackItem> */}
+                                    /> */}
+                                </StackItem>
                                 <StackItem>
                                     <FieldDropdown
-                                        name="type"
+                                        name="new_eventtype"
                                         placeholder=""
                                         label="Select event type"
-                                        options={props.eventForm.type}
+                                        options={getOptions(values)}
                                         // disabled={!(values as any).category}
                                         styles={dropdownStyles}
-
                                     />
                                 </StackItem>
                             </Stack>
                             <StackItem>
                                 <FieldText
-                                    name="detail"
+                                    name="new_detail"
                                     label="Details"
                                     styles={textFieldStyles}
                                 />
                             </StackItem>
                             <StackItem>
                                 <FieldDatePicker
-                                    name="date"
+                                    name="new_date"
                                     label="Date"
                                     firstDayOfWeek={firstDayOfWeek}
                                     showWeekNumbers={true}

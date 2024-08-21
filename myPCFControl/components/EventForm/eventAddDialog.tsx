@@ -5,23 +5,25 @@ import { useId, useBoolean } from '@fluentui/react-hooks';
 import { AddEventForm } from './addEventForm';
 import { LifeEventCategoryProp, postData } from '../../Api/api';
 import { FormikProps } from 'formik';
-import { IObjectHash } from 'pcf-core';
+import { IChoice, IObjectHash } from 'pcf-core';
 import { eventUseContext } from '../../Context/eventUseContext';
 import { addEvent } from '../../Context/eventContext';
+import { EventRecord } from '../../model';
 
 
 export interface Item {
     category: string,
-    type: string
+    type: IChoice
 }
 export interface EventAddFormProp {
     onFormCancel: () => void
-    formData: LifeEventCategoryProp
+    // formData: LifeEventCategoryProp
+    formData: IChoice
 }
 
 
 
-export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
+export const EventAddDialog: React.FC<EventAddFormProp> = (props) => {
 
     const [isDraggable, { toggle: toggleIsDraggable }] = useBoolean(false);
     const labelId: string = useId('dialogLabel');
@@ -31,6 +33,8 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
     const [ valid, setValid ] = React.useState(true)
 
     const {dispatch} = eventUseContext()
+
+
 
     const dialogContentProps = {
         type: DialogType.normal,
@@ -45,19 +49,7 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
         setValid(valid)
 
     }, [])
-
-      
-    // const modalProps = React.useMemo(
-    //     () => ({
-    //       // titleAriaId: labelId,
-    //       // subtitleAriaId: subTextId,
-    //       isBlocking: true,
-    //       styles: { main: { maxWidth: 700}},
-    //       // dragOptions: isDraggable ? dragOptions : undefined,
-    //     }),
-    //   );
-
-    // console.log(props.formData)
+   
 
     const onBtnSave = async () => {
         if(evenFormRef.current) {
@@ -67,7 +59,7 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
                 detail: evenFormRef.current.values.detail,
                 type: evenFormRef.current.values.type.text
             }
-            dispatch(addEvent(newEventSave))
+            // dispatch(addEvent(newEventSave))
             await postData(newEventSave)
 
             props.onFormCancel()
@@ -88,7 +80,7 @@ export const EventAddForm: React.FC<EventAddFormProp> = (props) => {
                 minWidth={288}
             >
                 <AddEventForm eventFormRef={evenFormRef} eventForm={props.formData} setValid={callbackBtnSave}/>
-                
+                {/* <AddEventForm eventFormRef={evenFormRef} setValid={callbackBtnSave}/> */}
                 <DialogFooter>
                     <PrimaryButton onClick={onBtnSave} text="Save" disabled={!valid} />
                     <DefaultButton onClick={props.onFormCancel} text="Cancel" />

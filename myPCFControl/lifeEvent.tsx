@@ -1,20 +1,15 @@
 import { CommandBarButton, IIconProps, Stack, StackItem } from "@fluentui/react"
 import { Panel, PanelContent, PanelHeader, PanelHeaderTitle } from "pcf-components/lib/panel"
 import * as React from "react"
-// import { LifeEventCategoryData, LifeEventCategoryProp } from "./DummyData/categoryData"
 import { LifeEventTile } from "./lifeEventTile"
-import { SummaryProp } from "./DummyData/summaryData"
 import { AddLifeEvent } from "./addLifeEvent"
 import { mergeStyleSets } from "@fluentui/merge-styles"
-import { fetchData, EventProp, fetchCategory } from "./Api/api"
-import { IChoice, Service } from "pcf-core"
-// import { EventContextProvider, EventContext } from "./Context/eventContext"
-import { LifeEventCategoryProp } from "./Api/api"
-import { AppProvider, AppContext } from "./Context/eventContext"
-import { text } from "stream/consumers"
-import { useBoolean } from "pcf-components"
+import { IChoice, getOptionSet } from "pcf-core"
+import { Loading, useBoolean } from "pcf-components"
 import { eventUseContext } from "./Context/eventUseContext"
-
+import { EventRecord, EventTable } from "./model"
+import { addEvent, editEvent, setCategory, setEvents } from "./Context/eventContext"
+import { choiceColumn, fetchxml, filterAnd, orderBy } from 'fetchxml4js';
 
 
 const addIcon: IIconProps = { iconName: 'Add'}
@@ -26,7 +21,6 @@ const classNames = mergeStyleSets({
     cmdButton: {
         height: '100%',
         marginRight: 10,
-        // backgroundColor: '#f4f4f4',
     },
     tiles: {
         boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.15)",
@@ -37,105 +31,103 @@ const classNames = mergeStyleSets({
     }
 })
 
-export interface LifeEventProp {
-    // contactEvent?: {}[]
-    // contactEvent: SummaryProp
-}
+export interface LifeEventProp {}
 
 
 export const LifeEvent: React.FC<LifeEventProp> = (props) => {
 
-    // const { state, dispatch  } = React.useContext(AppContext)
     const { state, dispatch  } = eventUseContext()
-
-    const [lifeEventCategory, setLifeEventCategory] = React.useState<LifeEventCategoryProp[]>([])
-    // const lifeEventCategory = React.useRef<LifeEventCategoryProp[]>(LifeEventCategoryData)
-    const [item, setItem] = React.useState<EventProp[]>([])
-
+    const lifeEvent  = React.useRef<EventRecord>()
     const [ openDlg, {setTrue: showDlg, setFalse: hideDlg}] = useBoolean(false)
+    const [ isLoading, setIsLoading ] = React.useState(true)
 
-    // const item = React.useRef<EventProp[]>([])
-    // console.log(Object.entries(props.contactEvent).map(([key, value]) => ({
-    //     key,
-    //     value
-    // })));
-
-    // const data = Object.entries(props.contactEvent).map(([key, value]) => ({
-    //     key,
-    //     value
-    // })).filter(evt => evt.key == "event")
-    // console.log(lifeEventCategory)
-    // console.log(data)
-    
-
-    // const getEvent = (category: LifeEventCategoryProp) => {
-    //     const a = data.filter((evt) => evt.key == category.text).map(evt => evt.value)
-    //     console.log(a)
-    //     return a
-    // }
-
-    // const addEvent = () => {
-
-    // }
-    
-    // console.log(state)
-
-    // React.useEffect(() => {
-    //       const categories = await fetchCategory();
-    //         // setLifeEventCategory(categories)
-    //         const events = await fetchData();
-    //         // setItem(events)
-    //        const getData = async () => {
-    //        // console.log("Category:", categories)
-    //         // console.log("Events:", events)
-    //         // console.error(dispatch({ type: 'SET_CATEGORY', payload: categories }));
-    //         // dispatch({ type: 'SET_EVENTS', payload: events });
-    //     };
-      
-    //     getData();
-    // },[])
-
-    const getEvents = (category: LifeEventCategoryProp) => {
-        return state.events.filter(e => e.category === category.text).map(e => ({
-            id: e.id,
-            category: e.category,
-            date: e.date,
-            detail: e.detail,
-            type: e.type
-        }))
-    }
-
-   
+    const getEvents = (category: IChoice) => {
+        return state.events.filter((e) => e.new_category.key == category.key);
+    };
 
     // console.log(dispatch)
-    // console.log(state)
+    // console.log(state.events)
     // console.log(item)
 
+    const onAddEvent = React.useCallback(() => {
+        lifeEvent.current = new EventRecord();
+        showDlg();
+    }, []);
+
+    const onAddEvent2 = React.useCallback((category: IChoice) => {
+        lifeEvent.current = new EventRecord();
+        // Set category and contact for the new event
+        lifeEvent.current.new_category = category;
+        showDlg();
+    }, []);
+
+    const onEdit = React.useCallback((event: EventRecord) => {
+        lifeEvent.current = event;
+        showDlg();
+    }, []);
+
+    const afterSave = React.useCallback((event: EventRecord, updating: boolean) => {
+        if (updating) {
+            dispatch(editEvent(event));
+        }
+        else {
+            dispatch(addEvent(event));
+        }
+        hideDlg();
+    }, []);
+
+    
+    const optionSet = React.useRef<IChoice[]>([])
+    const eventSet = React.useRef<EventRecord[]>()
+    const table = new EventTable()
+
+    React.useEffect(() => {
+        const getData = async () => {
+            try {
+                optionSet.current = await getOptionSet(table.LogicalName, "new_category")
+                // console.log(optionSet.current)
+                const data = await table.getRecordsWithFetchXml(fetchxml({ entity: table.LogicalName },
+                    table.attributesAsXML(),
+                    filterAnd(
+                        choiceColumn('statecode').equalTo(0)
+                    ),
+                    orderBy({ logicalName: "new_date", desc: true })
+                ));
+
+                dispatch(setCategory(optionSet.current));
+                dispatch(setEvents(data));
+                setIsLoading(false)
+            } catch (error) {
+                console.error(error)
+            }
+            
+        };
+      
+        getData();
+    },[dispatch])
+
     return (
-        // <AppProvider>
-            <Panel>
-                <PanelHeader>
-                    <Stack horizontal horizontalAlign="space-between" className={classNames.container}>
-                        <StackItem grow={1}>
-                            <PanelHeaderTitle title="Life Event" />
-                        </StackItem>
-                        <StackItem>
-                            <CommandBarButton iconProps={addIcon} text='Add event' onClick={showDlg} className={classNames.cmdButton} />
-                            {/* <CommandBarButton iconProps={addIcon} text="Add event"  className={classNames.cmdButton} /> */}
-                            {/* <AddLifeEvent lifeEventCategory={lifeEventCategory}  /> */}
-                        </StackItem>
-                    </Stack>
-                </PanelHeader>
-                <PanelContent>
+        <Panel>
+            <PanelHeader>
+                <Stack horizontal horizontalAlign="space-between" className={classNames.container}>
+                    <StackItem grow={1}>
+                        <PanelHeaderTitle title="Life Event" />
+                    </StackItem>
+                    <StackItem>
+                        <CommandBarButton iconProps={addIcon} text='Add event' onClick={onAddEvent} className={classNames.cmdButton} />
+                    </StackItem>
+                </Stack>
+            </PanelHeader>
+            <PanelContent>
+                <Loading text="Loading..." isLoading={isLoading}>
                     <div className={classNames.tiles}>
                         {state.category.map((category) => (
-                            <LifeEventTile key={category.id} item={state.events} getevent={getEvents(category)} category={category} />
+                            <LifeEventTile key={category.key} onedit={onEdit} onaddevent={onAddEvent2} item={state.events} getevent={getEvents(category)} category={category} />
                         ))}   
                     </div>
-                    {openDlg && <AddLifeEvent oncancel={hideDlg} lifeEventCategory={state.category}  />}
-                </PanelContent>
-            </Panel>
-        // </AppProvider>
-
+                </Loading>
+                {openDlg && <AddLifeEvent oncancel={hideDlg} afterSave={afterSave} event={lifeEvent.current} lifeEventCategory={state.category}  />}
+            </PanelContent>
+        </Panel>
     )
 }

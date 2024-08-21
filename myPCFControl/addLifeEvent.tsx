@@ -1,46 +1,26 @@
 import * as React from 'react';
 import { Dialog, DialogType, DialogFooter } from '@fluentui/react/lib/Dialog';
-import { PrimaryButton, DefaultButton, CommandBarButton } from '@fluentui/react/lib/Button';
-import { hiddenContentStyle, mergeStyles } from '@fluentui/react/lib/Styling';
-import { Toggle } from '@fluentui/react/lib/Toggle';
-import { ContextualMenu } from '@fluentui/react/lib/ContextualMenu';
+import { PrimaryButton, DefaultButton } from '@fluentui/react/lib/Button';
 import { useId, useBoolean } from '@fluentui/react-hooks';
 import { IIconProps, mergeStyleSets } from '@fluentui/react';
 import { CreateForm } from './createForm';
-// import { LifeEventCategoryProp } from './DummyData/categoryData';
-// import { EventCategory } from './model';
-import { FormikHelpers, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { IChoice, IObjectHash } from 'pcf-core';
 import { useAsync } from 'pcf-components/lib/hooks';
-import { postData, LifeEventCategoryProp } from './Api/api';
-import { addEvent, AppContext } from './Context/eventContext';
+import { addEvent } from './Context/eventContext';
 import { eventUseContext } from './Context/eventUseContext';
+import { EventRecord, EventTable } from './model';
+import { Loading, BlockedMessageBar } from 'pcf-components';
+import { MessageBarType } from '@fluentui/react/lib/MessageBar';
 
 
 
-const addIcon: IIconProps = { iconName: 'Add'}
-const classNames = mergeStyleSets({cmdButton: {height: '100%',marginRight: 10}, container: {width: '80%'}})
-
-
-
-
-// const d = EventCategory.bind({
-//   category: {key: 0, text: ""},
-//   type: {key: 0, text: ""},
-//   detail: "",
-//   date: ""
-// })
-
-const dialogContentProps = {
-  type: DialogType.normal,
-  title: 'Create event',
-  // closeButtonAriaLabel: 'Close',
-  // subText: 'Do you want to send this message without a subject?',
-};
 
 export interface AddLifeEventProp {
-  lifeEventCategory: LifeEventCategoryProp[]
+  lifeEventCategory: IChoice[]
   oncancel: () => void
+  event: EventRecord
+  afterSave: (event: EventRecord, updating: boolean) => void
 }
 
 export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
@@ -49,77 +29,58 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
   const labelId: string = useId('dialogLabel');
   const subTextId: string = useId('subTextLabel');
   const [isValid, setIsValid] = React.useState(true)
+  const [ isLoading, setIsLoading ] = React.useState(true)
 
-  const showCategory = React.useRef(!props.lifeEventCategory)
-
-  const lifeEvent = React.useRef<LifeEventCategoryProp[]>()
-
+  const showCategory = React.useRef(!props.event.new_category)
+  const lifeEvent = React.useRef<IChoice[]>()
   lifeEvent.current = props.lifeEventCategory
-  // const initialEventValues = React.useRef<EventCategory>()
-
   const formRef = React.useRef<FormikProps<IObjectHash>>()
+  const table = new EventTable()
+
+  const data = React.useRef<EventRecord>(props.event)
+
+
+
+  const dialogContentProps = {
+    type: DialogType.normal,
+    title: data.current.new_category ? data.current.new_category.text : 'Create event',
+  };
+   
+  console.log(data)
 
   const { dispatch  } = eventUseContext()
 
+  props.event = new EventRecord()
 
-  // console.log(lifeEvent.current)
-  
-  // const setType = React.useRef<IChoice>()
-
-  // const [execute, pending, value, error] = useAsync(async () => {
-  //   const isNew = initialEventValues.current.isNew();
-  //   initialEventValues.current.setValues(formRef.current.values);
-  //   initialEventValues.current.mictslos_name = event.mictslos_category.text + ' (' + props.contactFullname + ')';
-  //   await table.saveRecord(event, { silent: false });
-  //   props.onAfterSave(event, !isNew);
-  // });
-
-
-
-
-  // const modalProps = React.useMemo(
-  //   () => ({
-  //     // titleAriaId: labelId,
-  //     // subtitleAriaId: subTextId,
-  //     isBlocking: false,
-  //     styles: { main: { maxWidth: 700}},
-  //     // dragOptions: isDraggable ? dragOptions : undefined,
-  //   }),
-  //   [isDraggable, labelId, subTextId],
-  // );
+  const [execute, pending, value, error] = useAsync(async () => {
+    const isNew = props.event.isNew();
+    props.event.setValues(formRef.current.values);
+    props.event.new_name = props.event.new_category.text;
+    dispatch(addEvent(props.event))
+    await table.saveRecord(props.event, { silent: false });
+    // props.afterSave(props.event, !isNew);
+  });
 
   const callbackOnSave = React.useCallback((valid: boolean) => {
     setIsValid(valid)
   }, [])
 
+  const callBackOnLoading = React.useCallback((load: boolean) => {
+    setIsLoading(load)
+  }, [])
   // console.log(props.lifeEventCategory);
 
   // const optionType = React.useRef<[]>()
 
   const onsave = async() => {
-        if (formRef.current) {
-          const newData = {
-                category: formRef.current.values.category.text,
-                date: formRef.current.values.date,
-                detail: formRef.current.values.detail,
-                type: formRef.current.values.type.text
-          };
-          dispatch(addEvent(newData))
-          await postData(newData)
-          
-
-          props.oncancel()
-            
-          // console.log(newData)
-        }
+    if (formRef.current) {
+      execute()
+      props.oncancel()
+    }
   }
-
-
-  
 
   return (
     <>
-      {/* <CommandBarButton iconProps={addIcon} text='Add event' onClick={toggleHideDialog} className={classNames.cmdButton} /> */}
       <Dialog
         hidden={false}
         onDismiss={props.oncancel}
@@ -131,8 +92,17 @@ export const AddLifeEvent: React.FC<AddLifeEventProp> = (props) => {
         maxWidth={493}
         minWidth={288}
       >
-        <CreateForm formRef={formRef} typeOption={lifeEvent.current} setValid={callbackOnSave} showCategory={showCategory.current} />
-        {/* <CreateForm event={lifeEvent.current} setValid={callbackOnSave} categoryOption={props.lifeEventCategory} /> */}
+        {/* <Loading text="working on" isLoading={pending || isLoading}> */}
+          {error != null && <BlockedMessageBar message={error.message} messageBarType={MessageBarType.error} />}
+          <CreateForm 
+            formRef={formRef} 
+            event={data.current} 
+            typeOption={lifeEvent.current} 
+            setValid={callbackOnSave} 
+            showCategory={showCategory.current} 
+            setLoading={callBackOnLoading}
+          />
+        {/* </Loading> */}
         <DialogFooter>
           <PrimaryButton onClick={onsave} text="Save" disabled={!isValid} />
           <DefaultButton onClick={props.oncancel} text="Cancel" />

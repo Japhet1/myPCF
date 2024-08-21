@@ -1,15 +1,13 @@
 import * as React from "react"
-import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from 'formik';
+import { Formik, FormikProps, Form } from 'formik';
 import { IStackTokens, Stack, StackItem } from "@fluentui/react/lib/Stack";
-import { mergeStyleSets, values } from "@fluentui/react";
-import { Dropdown, IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
-import { TextField, ITextFieldStyles } from "@fluentui/react/lib/TextField";
-import { DatePicker, DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
+import { mergeStyleSets } from "@fluentui/react";
+import { IDropdownStyles, IDropdownOption } from "@fluentui/react/lib/Dropdown";
+import { ITextFieldStyles } from "@fluentui/react/lib/TextField";
+import { DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
 import { FieldDropdown, FieldText, FieldDatePicker, FormikValidityObserver } from "pcf-components/lib/formikInputs";
-// import { EventCategory } from "./model";
-import * as Yup from "yup"
-import { postData, LifeEventCategoryProp } from "./Api/api";
-import { IObjectHash } from "pcf-core";
+import { IChoice, getOptionSet } from "pcf-core";
+import { EventTable, EventRecord } from "./model";
   
 const stackgap = { childrenGap: 20 }
 const stackGap: IStackTokens = { childrenGap: 20 }
@@ -17,6 +15,9 @@ const stackGap: IStackTokens = { childrenGap: 20 }
 const classNames = mergeStyleSets({
     container: {
         width: '100%'
+    },
+    span: {
+        width: '50%'
     }
 })
 
@@ -33,170 +34,61 @@ const days: IDropdownOption[] = [
     { text: 'Saturday', key: DayOfWeek.Saturday },
 ]
 
-interface MyFormValues {
-    category: {key: string, text: string, type: {key: string, text: string}[]},
-    type: {key: string, text: string},
-    detail: string,
-    date: string
-}
-
 interface CreateForm {}
 
-interface FormikValue {
-    category: LifeEventCategoryProp
-}
-
 interface CreateFormProp {
-    typeOption: LifeEventCategoryProp[]
+    typeOption: IChoice[]
     setValid: (valid: boolean) => void
     showCategory: boolean
-    // event: EventCategory
+    event: EventRecord
     formRef: React.MutableRefObject<FormikProps<CreateForm>>
-}
-// const newLead: Lead = new Lead
-
-const setForm = {
-    category: '',
-    type: '',
-    detail: '',
-    date: ''
+    setLoading: (load: boolean) => void
 }
 
-// const valid = newLead.validate(setForm)
 
-// newLead.getIdColumnName(setForm)
-
-export const CreateForm: React.FC<CreateFormProp> = (props) => {
+export const CreateForm: React.FC<CreateFormProp> = React.memo((props) => {
     const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
-    const [firstTextFieldValue, setFirstTextFieldValue] = React.useState('');
-    const [secondTextFieldValue, setSecondTextFieldValue] = React.useState('');
-    // const [typeOption, settypeOption] = React.useState<LifeEventCategoryProp[]>(props.typeOption)
 
-    const optionCategory = React.useRef<LifeEventCategoryProp[]>(props.typeOption)
-    // const event  = props.event as EventCategory
+    const optionCategory = React.useRef<IChoice[]>(props.typeOption)
+    const table = new EventTable()
+    const typeOptionSet = React.useRef<IChoice[]>([])
+    const { event } = props
 
-    // event.setValues(setForm)
-
-    // console.log(props.typeOption)
-
-    
-
-    const [selectedItem, setSelectedItem] = React.useState<IObjectHash>();
-
-    // const selectedItem = React.useRef<MyFormValues>
-
-    
-
-    // const transformData = (data?: MyFormValues) => {
-
-    //     const newData = {
-    //         category: data?.category.text,
-    //         date: new Date(`${data?.date}`).toLocaleString(),
-    //         detail: data?.detail,
-    //         type: data?.type.text
-    //     };
-        
-    //     return postData(newData)
-    // };
-      
-      // Get the transformed data
-    //   const transformedData = transformData(selectedItem);
-      
-    // console.log(transformData);
-    
-
-    // const dataFormat = {
-    //     category: d.text
-    // }
-
-    // const onChange = (event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void => {
-    //     setSelectedItem(item);
-    // };    
-    
-
-
-    // console.log(typeOption)
-  
-    // const onChangeFirstTextFieldValue = React.useCallback(
-    //     (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-    //     setFirstTextFieldValue(newValue || '');
-    //     },
-    //     [],
-    // );
-    // const onChangeSecondTextFieldValue = React.useCallback(
-    //     (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
-    //     if (!newValue || newValue.length <= 5) {
-    //         setSecondTextFieldValue(newValue || '');
-    //     }
-    //     },
-    //     [],
-    // )
+    React.useEffect(() => {
+        const fn = async () => {
+            const types = await getOptionSet(table.LogicalName, 'new_eventtype');
+            typeOptionSet.current = types;
+            // console.log(typeOptionSet.current)
+            props.setLoading(false)
+        };
+        fn();
+    }, [typeOptionSet.current]);
 
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getOptions = React.useCallback((values: any): IDropdownOption<any>[] => {
-        
-        // if (values.category) {
-        //     const v = values.category.key;
-        //     const selectedCategory = optionCategory.current.find((e) => e.key.toString().startsWith(v));
-        //     if (selectedCategory && selectedCategory.type) {
-        //         // console.log(selectedCategory.type);
-        //         return selectedCategory.type;
-        //     }
-        // }
-        const selectedCategory = optionCategory.current.find(e => e.key.toString().startsWith(values.category.key));
-        return selectedCategory && selectedCategory.type ? selectedCategory.type : [];
-
-        // return [];
+    const getOptions = React.useCallback((values) => {
+        if (values.new_category) {
+            const v = values.new_category.key.toString();
+            return typeOptionSet.current.filter((e) => e.key.toString().startsWith(v) || e.key == 1) as IDropdownOption<any>[];
+        }
+        return [];
         
     }, [])
 
-    // React.useEffect(() => {
-    //     const transformData = async (data?: IObjectHash) => {
-    //         const newData = {
-    //             category: data?.category.text,
-    //             date: data?.date,
-    //             detail: data?.detail,
-    //             type: data?.type.text
-    //         };
-    //         if(newData.category) {
-    //             return await postData(newData)
-    //         }
-    //     };
-    //     transformData(selectedItem)
-    // }, [selectedItem])
+   
 
     return (
         <div>
             <Formik
-                initialValues={setForm} //event.writableFields
-                validationSchema={Yup.object().shape({
-                    category: Yup.object({
-                        key: Yup.number().required('Required')
-                    }).required('Required').nullable(),
-                    type: Yup.object({
-                        key: Yup.number().required('Required')
-                    }).required('Required').nullable(),
-                    detail: Yup.string(),
-                    date: Yup.string().required('Required'),
-                })} //event.validate
+                initialValues={event.writableFields} //event.writableFields
+                validationSchema={event.validate()} //event.validate()
                 validateOnMount={true}
                 enableReinitialize={true}
                 innerRef={props.formRef}
                 onSubmit={() => {}}
                 // onSubmit={(values, actions) => {
                 //     console.log( values );
-                //     // selectedItem.current = values
-                //     // const newData = {
-                //     //     category: values.category.text,
-                //     //     date: values.date,
-                //     //     detail: values.detail,
-                //     //     type: values.type.text
-                //     // };
-                //     // await postData(newData)
                 //     actions.resetForm()
-                //     // console.log(transformData(values))
-                //     setSelectedItem(values as MyFormValues)
                 //     // console.log(JSON.stringify(values, null, 2));
                 //     actions.setSubmitting(true);
                 // }}
@@ -205,39 +97,41 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
                     <Form>
                         <Stack tokens={stackGap}>
                             <Stack horizontal tokens={stackgap}>
-                                <StackItem>
-                                    <FieldDropdown
-                                        name="category"
-                                        placeholder=""
-                                        label="Select category"
-                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                        options={optionCategory.current as IDropdownOption<any>[]}
-                                        styles={dropdownStyles}  
-                                    />
-                                </StackItem>
-                                <StackItem>
-                                    <FieldDropdown
-                                        name="type"
+                                {props.showCategory && (
+                                    <StackItem>
+                                        <FieldDropdown
+                                            name="new_category"
+                                            placeholder=""
+                                            label="Select category"
+                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                            options={optionCategory.current as IDropdownOption<any>[]}
+                                            styles={dropdownStyles}  
+                                        />
+                                    </StackItem>
+                                )}
+                                <StackItem className={props.showCategory? classNames.span : classNames.container}>
+                                    <FieldDropdown 
+                                        name="new_eventtype"
                                         placeholder=""
                                         label="Select event type"
                                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         options={getOptions(values)}
                                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                        disabled={!(values as any).category}
+                                        disabled={!(values as any).new_category}
                                         styles={dropdownStyles}
                                     />
                                 </StackItem>
                             </Stack>
                             <StackItem>
                                 <FieldText
-                                    name="detail"
+                                    name="new_detail"
                                     label="Details"
                                     styles={textFieldStyles}
                                 />
                             </StackItem>
                             <StackItem>
                                 <FieldDatePicker
-                                    name="date"
+                                    name="new_date"
                                     label="Date"
                                     firstDayOfWeek={firstDayOfWeek}
                                     showWeekNumbers={true}
@@ -257,4 +151,4 @@ export const CreateForm: React.FC<CreateFormProp> = (props) => {
             />
         </div>
     );
-}
+}, (prev, current) => prev.typeOption == current.typeOption)

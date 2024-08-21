@@ -1,4 +1,4 @@
-import { ComponentContextService, Service } from "pcf-core";
+import { ComponentContextService, Service, getOptionSet } from "pcf-core";
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import { SummaryContact } from "./SummaryContact";
 import * as React from "react";
@@ -44,17 +44,6 @@ export class myPCFControl implements ComponentFramework.ReactControl<IInputs, IO
     ): void {
         // this.notifyOutputChanged = notifyOutputChanged;
         Service.init(new ComponentContextService(context))
-
-        const fetch = Service.webApi.retrieveMultipleRecords("new_lifeevent", "?$select=new_category").then(
-            function success(results) {
-                console.log(results);
-            },
-            function(error) {
-                console.log(error.message);
-            }
-        );
-        console.log(fetch)
-
     }
 
     /**

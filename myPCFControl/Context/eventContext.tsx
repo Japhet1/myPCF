@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { createContext, useReducer, ReactNode } from 'react';
-import { LifeEventCategoryProp, EventProp } from '../Api/api';
-import axios from 'axios';
+import { getOptionSet, IChoice } from 'pcf-core';
+import { choiceColumn, fetchxml, filterAnd, orderBy } from 'fetchxml4js';
+import { EventTable, EventRecord } from '../model';
 
 const SET_CATEGORY = 'SET_CATEGORY';
 const SET_EVENTS = 'SET_EVENTS';
@@ -10,48 +11,40 @@ const EDIT_EVENT = 'EDIT_EVENT';
 const DELETE_EVENT = 'DELETE_EVENT';
 
 
-
 interface Type {
     key: string;
     text: string;
 }
 
-interface Category {
-    id: string;
-    key: string;
-    text: string;
-    type: Type[];
-}
-
 export interface Event {
-    id?: string;
-    category: string;
-    date: string;
-    detail: string;
-    type: string;
+    Id?: string;
+    new_category: string;
+    new_date: string;
+    new_detail: string;
+    new_eventtype: string;
 }
 
 interface State {
-    category: Category[];
-    events: Event[];
+    category: IChoice[];
+    events: EventRecord[];
 }
 
-const setCategory = (categories: Category[]): Action => ({
+export const setCategory = (categories: IChoice[]): Action => ({
     type: SET_CATEGORY,
     payload: categories,
 });
 
-const setEvents = (events: Event[]): Action => ({
+export const setEvents = (events: EventRecord[]): Action => ({
     type: SET_EVENTS,
     payload: events,
 });
 
-export const addEvent = (event: Event): Action => ({
+export const addEvent = (event: EventRecord): Action => ({
     type: ADD_EVENT,
     payload: event,
 });
 
-export const editEvent = (event: Event): Action => ({
+export const editEvent = (event: EventRecord): Action => ({
     type: EDIT_EVENT,
     payload: event,
 });
@@ -88,12 +81,12 @@ const EventReducer = (state: State, action: Action): State => {
         case 'EDIT_EVENT':
             return {
                 ...state,
-                events: state.events.map(event => event.id === action.payload.id ? action.payload : event),
+                events: state.events.map(event => event.Id === action.payload.id ? action.payload : event),
             };
         case 'DELETE_EVENT':
             return {
                 ...state,
-                events: state.events.filter(event => event.id !== action.payload),
+                events: state.events.filter(event => event.Id !== action.payload),
             };
         default:
             return state;
@@ -105,21 +98,7 @@ export const AppContext = createContext<AppContextProps | undefined>(undefined);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(EventReducer, initialState);
 
-    React.useEffect(() => {
-        const getData = async () => {
-            try {
-                // const categories = await axios.get<Category[]>("http://localhost:3001/category/")
-                // const events = await axios.get<Event[]>("http://localhost:3001/events/")
-                // dispatch(setCategory(categories.data));
-                // dispatch(setEvents(events.data));
-            } catch (error) {
-                console.error(error)
-            }
-            
-        };
-      
-        getData();
-    },[dispatch])
+    
    
     return (
         <AppContext.Provider value={{ state, dispatch}}>

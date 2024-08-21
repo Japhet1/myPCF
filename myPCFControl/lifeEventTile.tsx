@@ -1,18 +1,16 @@
 import * as React from "react"
-// import { LifeEventCategoryProp } from "./DummyData/categoryData"
-import { Panel, PanelContent, PanelHeader, PanelHeaderFlexible } from "pcf-components/lib/panel"
+import { Panel, PanelContent, PanelHeaderFlexible } from "pcf-components/lib/panel"
 import { StackItem, Stack } from "@fluentui/react/lib/Stack"
 import { ActionButton, IconButton } from "@fluentui/react/lib/Button"
 import { mergeStyleSets, Text } from "@fluentui/react"
-import { fetchData, EventProp, LifeEventCategoryProp } from "./Api/api"
 import { formatDistance, subDays } from "date-fns";
 import { useBoolean } from "pcf-components"
-import { EventAddForm } from "./components/EventForm/eventAddDialog"
+import { EventAddDialog } from "./components/EventForm/eventAddDialog"
 import { EventList } from "./components/EventPanel/eventList"
-import { Event } from "./Context/eventContext"
+import { IChoice, getOptionSet } from "pcf-core"
+import { EventRecord, EventTable } from "./model"
 
 const stackGap = { childrenGap: 12}
-
 
 const classNames = mergeStyleSets({
     iconBackgound: {
@@ -23,7 +21,7 @@ const classNames = mergeStyleSets({
 })
 
 export interface Item {
-    id: string,
+    id?: string,
     category: string,
     date: string,
     detail: string,
@@ -31,19 +29,20 @@ export interface Item {
 }
 
 export interface LifeEventTileProp {
-    category: LifeEventCategoryProp,
-    // event: any[]
-    item: Event[]
-    getevent: Item[]
+    category: IChoice
+    item: EventRecord[]
+    getevent: EventRecord[]
+    onaddevent: (category: IChoice) => void
+    onedit: (event: EventRecord) => void
 }
 
-const categoryiconname = (category: LifeEventCategoryProp) => {
+const categoryiconname = (category: IChoice) => {
     switch (category.key) {
-        case "1":
+        case 10:
             return "Education"
-        case "2": 
+        case 20: 
             return "Work"
-        case "3":
+        case 30:
             return "Hospital"
         default: 
             return "CubeShape"
@@ -56,36 +55,27 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
     const [formDlg, {setTrue: showFormDlg, setFalse: hideFormDlg}] = useBoolean(false)
     const [panelDlg, {setTrue: showPanelDlg, setFalse: hidePanelDlg}] = useBoolean(false)
 
-    const formDataEvent = React.useRef<LifeEventCategoryProp>()
+    const formDataEvent = React.useRef<IChoice>()
 
     const onAdd = React.useCallback((event?: React.MouseEvent<HTMLAnchorElement>) => {
         event!.stopPropagation()
-        showFormDlg()
+        props.onaddevent(props.category)
+        // console.log(props.category)
+        // showFormDlg()
     }, []);
 
-    // console.log(props.category.text)
-
-    // console.log(props.event)
-
-    // const newEvent = JSON.parse(fetchData())
-
-    // const countEvents = newEvent.filter()
-    // console.log(fetchData())
-    // const count = props.item.reduce((acc, item) => {
-    //     acc[item.category] = (acc[item.category] || 0) + 1;
-    //     return acc;
-    // }, {});
-
-    // const count = 0
-    const count = props.item.filter(e => e.category === props.category.text).map(e => e.category)
-
-    const detail = props.item.filter(e => e.category === props.category.text).map(e => ({type: e.type, date: e.date}))
     
-    const formData = props.item.filter(e => e.category === props.category.text).map(e => ({category: e.category, type: e.type}))
+
+    const count = props.item.filter(e => e.new_category.key === props.category.key).map(e => e.new_category.text)
+    const detail = props.getevent.filter(e => e.new_category.key === props.category.key).map(e => ({type: e.new_eventtype, date: e.new_date}))
+    const formData = props.item.filter(e => e.new_category.key === props.category.key).map(e => ({category: e.new_category.text, type: e.new_eventtype}))
     formDataEvent.current = props.category
     // console.log(count)
     // console.log(props.category)
     // console.log(props.getevent)
+    // console.log(formData)
+
+   
 
     return (
         <Panel onClick={showPanelDlg}>
@@ -110,19 +100,18 @@ export const LifeEventTile: React.FC<LifeEventTileProp> = (props) => {
             {count.length && detail.length > 0 ? (
                 <Stack tokens={{childrenGap: 5}}>
                     <StackItem>
-                        <Text variant="smallPlus">{detail[detail.length -1].type}</Text>
+                        <Text variant="smallPlus">{detail[detail.length -1].type.text}</Text>
                     </StackItem>
                     <StackItem>
                         <Text variant="smallPlus">{formatDistance(subDays(new Date(detail[detail.length -1].date), 3), new Date(), { addSuffix: true })}</Text>
                     </StackItem>
                 </Stack> )
                 :   (
-                    <ActionButton iconProps={{iconName: 'Add'}} onClick={onAdd}>Add event</ActionButton>
-                    
+                    <ActionButton iconProps={{iconName: 'Add'}} onClick={onAdd}>Add event</ActionButton>  
                 )  
             }
-                {formDlg && <EventAddForm onFormCancel={hideFormDlg} formData={formDataEvent.current} />}
-                {panelDlg && <EventList listevent={props.getevent} onhide={hidePanelDlg} addevent={showFormDlg} panelData={formDataEvent.current}/>}
+                {formDlg && <EventAddDialog onFormCancel={hideFormDlg} formData={props.category}/>}
+                {panelDlg && <EventList listevent={props.getevent} onadd={onAdd} onEdit={props.onedit} onhide={hidePanelDlg} addevent={showFormDlg} panelHeader={props.category.text}/>}
                 
             </PanelContent>
         </Panel>

@@ -8,6 +8,7 @@ import { ITextFieldStyles } from "@fluentui/react/lib/TextField";
 import { DayOfWeek, defaultDatePickerStrings } from "@fluentui/react";
 import { LifeEventCategoryProp } from '../../Api/api';
 import { Item } from '../../lifeEventTile';
+import { Event } from '../../Context/eventContext';
 
 
 const stackGap: IStackTokens = { childrenGap: 20 }
@@ -28,8 +29,8 @@ const days: IDropdownOption[] = [
 interface EditForm {}
 
 interface EditEventFormProp {
-    editformdata: LifeEventCategoryProp,
-    edititem: Item,
+    // editformdata: LifeEventCategoryProp,
+    edititem: Event,
     editformref: React.MutableRefObject<FormikProps<EditForm>>
 }
 
@@ -37,11 +38,11 @@ export const EditEventForm: React.FC<EditEventFormProp> = (props) => {
     const [firstDayOfWeek, setFirstDayOfWeek] = React.useState(DayOfWeek.Sunday);
 
     const setEditEventForm = {
-        id: props.edititem.id,
-        category: props.editformdata.text,
-        type: props.edititem.type,
-        detail: props.edititem.detail,
-        date: props.edititem.date
+        id: props.edititem.Id,
+        new_category: props.edititem.new_category,
+        new_eventtype: props.edititem.new_eventtype,
+        new_detail: props.edititem.new_detail,
+        new_date: props.edititem.new_date
     }
 
     // console.log(props.editformdata)
@@ -71,13 +72,13 @@ export const EditEventForm: React.FC<EditEventFormProp> = (props) => {
                         <Stack tokens={stackGap}>
                             <Stack>
                                 <StackItem>
-                                    <FieldDropdown
+                                    {/* <FieldDropdown
                                         name="type"
                                         placeholder={props.edititem.type}
                                         label="Select event type"
                                         options={props.editformdata.type}
                                         styles={dropdownStyles}
-                                    />
+                                    /> */}
                                 </StackItem>
                             </Stack>
                             <StackItem>
